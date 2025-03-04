@@ -63,3 +63,19 @@ label {
     text-align: left;
     margin-bottom: 5px;
 }
+
+/* Style for radio buttons side by side */
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.radio-group div {
+    display: flex;
+    align-items: center;
+}
+
+.radio-group input {
+    margin-right: 5px;
+}
