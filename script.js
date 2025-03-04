@@ -15,11 +15,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const usernameInput = document.getElementById("username");
         const ageInput = document.getElementById("age");
         const reasonInput = document.getElementById("whyJoin");
-
+        const plInput = document.getElementById("pl");
+const klInput = document.getElementById("kl");
+const pcInput = document.getElementById("pc");
+const ispInput = document.getElementById("isp");
         const username = usernameInput.value.trim();
         const age = ageInput.value.trim();
         const reason = reasonInput.value.trim();
-
+        const kl = klInput.value.trim();
+const pl = plInput.value.trim();
+const pc = pcInput.value.trim();
+const isp = ispInput.value.trim();
         console.log("✅ Submitted Data:", { username, age, reason });
 
         // Webhook URL - replace with your actual Discord webhook
@@ -32,9 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     title: "📢 New Application Received!",
                     color: 0x3498db, // Blue color
                     fields: [
-                        { name: "👤 Username", value: username, inline: true },
-                        { name: "🎂 Age", value: age, inline: true },
-                        { name: "📝 Reason", value: reason, inline: false }
+                        { name: "👤 Asmuo", value: <@username>, inline: true },
+                        { name: "🎂 Metai", value: age, inline: true },
+                        { name: "📝 Dėl ko nori i gang?", value: reason, inline: true },
+                       { name: "🔫 Pašaudymo lygis", value: pl, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: kl, inline: true}
+                        { name: "🖥️ PC Check", value: pc, inline: true }
+                        { name: "🚫 Ispėjimo išpirkimas", value: isp, inline: true }
                     ],
                     footer: {
                         text: "Anketos | Miela Malonu",
