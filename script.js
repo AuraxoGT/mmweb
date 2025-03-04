@@ -4,17 +4,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("applicationForm");
     const responseMessage = document.getElementById("responseMessage");
 
-    if (!form) {
-        console.error("Form not found!");
-        return;
-    }
+    // Debugging - Check if elements exist
+    console.log("Checking input fields...");
+    console.log("Username:", document.getElementById("username"));
+    console.log("Age:", document.getElementById("age"));
+    console.log("Why Join:", document.getElementById("whyJoin"));
 
     form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Stops normal form submission
+        event.preventDefault();
 
-        const username = document.getElementById("username").value.trim();
-        const age = document.getElementById("age").value.trim();
-        const reason = document.getElementById("whyJoin").value.trim(); // FIXED
+        const usernameInput = document.getElementById("username");
+        const ageInput = document.getElementById("age");
+        const reasonInput = document.getElementById("whyJoin");
+
+        if (!usernameInput || !ageInput || !reasonInput) {
+            console.error("❌ One or more input fields not found!");
+            return;
+        }
+
+        const username = usernameInput.value.trim();
+        const age = ageInput.value.trim();
+        const reason = reasonInput.value.trim();
 
         console.log("Submitted Data:", { username, age, reason });
 
