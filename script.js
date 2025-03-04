@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const age = ageInput.value.trim();
         const reason = reasonInput.value.trim();
 
-        console.log("✅ Submitted Data:", username, age, reason);
+        console.log("✅ Submitted Data:", { username, age, reason });
 
         // Webhook URL - replace with your actual Discord webhook
         const webhookURL = "https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF";
