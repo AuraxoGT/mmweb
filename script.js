@@ -39,12 +39,12 @@ const isp = ispInput.value.trim();
                     color: 0x3498db, // Blue color
                     fields: [
                         { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
-                        { name: "🎂 Metai", value: age, inline: true },
-                        { name: "📝 Dėl ko nori i gang?", value: reason, inline: true },
-                        { name: "🔫 Pašaudymo lygis", value: pl, inline: true },
-                        { name: "📞 Komunikacijos lygis", value: kl, inline: true },
-                        { name: "🖥️ PC Check", value: pc, inline: true },
-                        { name: "🚫 Ispėjimo išpirkimas", value: isp, inline: true },
+                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
+                        { name: "📝 Dėl ko nori i gang?", value: `**${reason}**`, inline: true },
+                        { name: "🔫 Pašaudymo lygis", value: `**${pl}**`, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: `**${kl}**`, inline: true },
+                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
+                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
                     ],
                     footer: {
                         text: "Anketos | Miela Malonu",
