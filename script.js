@@ -38,7 +38,7 @@ const isp = ispInput.value.trim();
                     title: "📢 Nauja Aplikacija!",
                     color: 0x3498db, // Blue color
                     fields: [
-                        { name: "👤 Asmuo", value: <@username>, inline: true },
+                        { name: "👤 Asmuo", value: <@$username>, inline: true },
                         { name: "🎂 Metai", value: age, inline: true },
                         { name: "📝 Dėl ko nori i gang?", value: reason, inline: false },
                        { name: "🔫 Pašaudymo lygis", value: pl, inline: false },
