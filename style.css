@@ -64,18 +64,19 @@ label {
     margin-bottom: 5px;
 }
 
-/* Style for radio buttons side by side */
+/* Flex container for radio buttons */
 .radio-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;  /* Align the radio buttons side by side */
+    gap: 20px;  /* Add space between "Taip" and "Ne" */
     margin: 10px 0;
 }
 
-.radio-group div {
-    display: flex;
-    align-items: center;
+.radio-group input {
+    margin: 0;  /* Remove margin from radio button to keep it aligned */
 }
 
-.radio-group input {
-    margin-right: 5px;
+.radio-group label {
+    margin: 0;
+    padding-left: 5px;  /* Small space between the radio button and the label */
 }
