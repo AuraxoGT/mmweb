@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const usernameInput = document.getElementById("username");
         const ageInput = document.getElementById("age");
         const reasonInput = document.getElementById("whyJoin");
-        }
+        
 
         const username = usernameInput.value.trim();
         const age = ageInput.value.trim();
