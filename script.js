@@ -35,7 +35,7 @@ const isp = ispInput.value.trim();
         const payload = {
             embeds: [
                 {
-                    title: "📢 New Application Received!",
+                    title: "📢 Nauja Aplikacija!",
                     color: 0x3498db, // Blue color
                     fields: [
                         { name: "👤 Asmuo", value: <@username>, inline: true },
