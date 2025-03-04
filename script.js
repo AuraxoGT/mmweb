@@ -37,6 +37,8 @@ const isp = ispInput.value.trim();
                 {
                     title: "📢 Nauja Aplikacija!",
                     color: 0x3498db, // Blue color
+                    
+                    
                     fields: [
                         { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
@@ -46,9 +48,13 @@ const isp = ispInput.value.trim();
                         { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
                         { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
                     ],
+author: {
+                    "name" : "Miela Malonu"
+                    "icon_url": "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
+},
                     footer: {
                         text: "Anketos | Miela Malonu",
-                        icon_url: "https://cdn-icons-png.flaticon.com/512/295/295128.png"
+                        icon_url: "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
                     },
                     timestamp: new Date().toISOString()
                 }
