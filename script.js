@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const username = document.getElementById("username").value.trim();
         const age = document.getElementById("age").value.trim();
-        const reason = document.getElementById("reason").value.trim();
+        const reason = document.getElementById("whyJoin").value.trim(); // FIXED
 
         console.log("Submitted Data:", { username, age, reason });
 
