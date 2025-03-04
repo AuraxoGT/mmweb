@@ -41,10 +41,10 @@ const isp = ispInput.value.trim();
                         { name: "👤 Asmuo", value: <@$username>, inline: true },
                         { name: "🎂 Metai", value: age, inline: true },
                         { name: "📝 Dėl ko nori i gang?", value: reason, inline: false },
-                       { name: "🔫 Pašaudymo lygis", value: pl, inline: false },
-                        { name: "📞 Komunikacijos lygis", value: kl, inline: false }
-                        { name: "🖥️ PC Check", value: pc, inline: false }
-                        { name: "🚫 Ispėjimo išpirkimas", value: isp, inline: false }
+                        { name: "🔫 Pašaudymo lygis", value: pl, inline: false },
+                        { name: "📞 Komunikacijos lygis", value: kl, inline: false },
+                        { name: "🖥️ PC Check", value: pc, inline: false },
+                        { name: "🚫 Ispėjimo išpirkimas", value: isp, inline: false },
                     ],
                     footer: {
                         text: "Anketos | Miela Malonu",
