@@ -50,7 +50,7 @@ const isp = ispInput.value.trim();
                     ],
 author: {
                     "name" : "Miela Malonu"
-                    "icon_url": "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
+                    "icon_url" : "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
 },
                     footer: {
                         text: "Anketos | Miela Malonu",
