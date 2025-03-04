@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         { name: "📝 Reason", value: reason, inline: false }
                     ],
                     footer: {
-                        text: "Application Bot",
+                        text: "Anketos | Miela Malonu",
                         icon_url: "https://cdn-icons-png.flaticon.com/512/295/295128.png"
                     },
                     timestamp: new Date().toISOString()
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => {
             if (response.ok) {
-                responseMessage.innerText = `✅ Application sent successfully, ${username}!`;
+                responseMessage.innerText = `✅ Aplikacija pateikta su jumis bus susisiekta discorde, ${username}!`;
                 responseMessage.style.color = "green";
                 form.reset();
             } else {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
             console.error("Error:", error);
-            responseMessage.innerText = "❌ Failed to send application. Please try again.";
+            responseMessage.innerText = "❌ Nepavyko išsiūsti aplikacijos bandykite dar karta.";
             responseMessage.style.color = "red";
         });
     });
