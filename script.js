@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ageInput = document.getElementById("age");
         const reasonInput = document.getElementById("reason");
 
-        if (!usernameInput || !ageInput || !reasonInput) {
-            console.error("One or more input fields not found!");
-            return;
+    
         }
 
         const username = usernameInput.value.trim();
