@@ -12,18 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (event) {
         event.preventDefault(); // Stops normal form submission
 
-        const usernameInput = document.getElementById("username");
-        const ageInput = document.getElementById("age");
-        const reasonInput = document.getElementById("reason");
-
-        if (!usernameInput || !ageInput || !reasonInput) {
-            console.error("One or more input fields not found!");
-            return;
-        }
-
-        const username = usernameInput.value.trim();
-        const age = ageInput.value.trim();
-        const reason = reasonInput.value.trim();
+        const username = document.getElementById("username").value.trim();
+        const age = document.getElementById("age").value.trim();
+        const reason = document.getElementById("reason").value.trim();
 
         console.log("Submitted Data:", { username, age, reason });
 
