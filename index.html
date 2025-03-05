@@ -1,40 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Form</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h2>Miela Malonu Aplikacija</h2>
-        <form id="applicationForm">
-            <label for="username">Jūsų Discord id? (Įrašius bloga ID negalėsime su jumis susisiekti):</label>
-            <input type="number" id="username" required>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #181818;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-            <label for="age">Kiek jums metų?:</label>
-            <input type="number" id="age" required>
+.container {
+    background: #282828;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
 
-            <label for="whyJoin">Kodėl norite tapti mūsų gaujos nariu?</label>
-            <textarea id="whyJoin" required></textarea>
+input, textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
 
-<label for="pl">Kiek vertinate savo šaudymo lygį?</label>
-            <textarea type="number" id="pl" required></textarea>
+button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-<label for="kl">Kiek vertinate savo komunikavimo lygį?</label>
-            <textarea type="number" id="kl" required></textarea>
-
-<label for="pc">Ar sutiktumėte pasidaryti pc check?</label>
-            <textarea type="number" id="pc" required></textarea>
-
-<label for="isp">Ar sutiktumėte išpirkti ispėjima jei jis būtų gautas dėl jūsų kaltės?</label>
-            <textarea type="number" id="isp" required></textarea>
-
-            <button type="submit">Submit</button>
-        </form>
-        <p id="responseMessage"></p>
-    </div>
-</body>
-<script src="script.js"></script>
-</html>
+button:hover {
+    background: #45a049;
+}
