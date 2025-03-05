@@ -14,7 +14,7 @@ body {
 
 /* Glassmorphism Effect */
 .container {
-    background: rgba(40, 40, 40, 0.8);
+    background: rgba(40, 40, 40, 0.1);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     padding: 25px;
