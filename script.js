@@ -59,11 +59,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const username = document.getElementById("username").value.trim(); // User ID (username)
-        console.log("🔍 Checking username:", username, "against blacklist:", blacklist);
+        const usernameNumber = Number(username); // Convert username to number for comparison
+        console.log("🔍 Checking username:", usernameNumber, "against blacklist:", blacklist);
 
-        // 🛑 Check if user is blacklisted (by partial match of username)
-        const isBlacklisted = blacklist.some(id => String(id).includes(username)); // Ensure username and blacklist id are compared as strings
-        if (isBlacklisted) {
+        // 🛑 Check if user is blacklisted (by username)
+        if (Array.isArray(blacklist) && blacklist.includes(usernameNumber)) { // Check if 'username' is in the blacklist
             console.log("🚨 User is blacklisted!");
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
@@ -85,13 +85,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                     title: "📢 Nauja Aplikacija!",
                     color: 16711680,
                     fields: [
-                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
-                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
-                        { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
-                        { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
-                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
-                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
-                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
+                        { name: "👤 Asmuo", value: <@${username}>, inline: true },
+                        { name: "🎂 Metai", value: **${age}**, inline: true },
+                        { name: "📝 Kodėl nori prisijungti?", value: **${reason}**, inline: true },
+                        { name: "🔫 Pašaudymo lygis", value: **${pl} / 10**, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: **${kl} / 10**, inline: true },
+                        { name: "🖥️ PC Check", value: **${pc}**, inline: true },
+                        { name: "🚫 Ispėjimo išpirkimas", value: **${isp}**, inline: true },
                     ],
                     author: {
                         name: "Miela Malonu",
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         .then(response => {
             if (response.ok) {
-                responseMessage.innerText = `✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.`;
+                responseMessage.innerText = ✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.;
                 responseMessage.style.color = "green";
                 form.reset();
             } else {
@@ -129,4 +129,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Set Status on Page Load ---
     fetchStatus();
-});
+})
