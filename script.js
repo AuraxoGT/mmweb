@@ -20,12 +20,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function fetchStatus() {
         try {
             const response = await fetch(JSONBIN_URL, {
-                headers: { "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi." }
+                headers: { "X-Master-Key": API_KEY }
             });
             const data = await response.json();
 
             updateStatusUI(data.record.status);
             blacklist = data.record.blacklist || []; // Store blacklist globally
+            console.log("📛 Updated Blacklist:", blacklist); // Debugging log
         } catch (error) {
             console.error("❌ Error fetching status:", error);
         }
@@ -57,14 +58,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const username = document.getElementById("username").value.trim(); // User ID (username)
+        const username = document.getElementById("username").value.trim();
 
-        // 🛑 Check if user is blacklisted (by username)
-        if (blacklist.includes(username)) { // Check if 'username' is in the blacklist
+        console.log("🔍 Checking blacklist for:", username);
+        console.log("📛 Current Blacklist:", blacklist);
+
+        if (Array.isArray(blacklist) && blacklist.includes(username)) { 
+            console.log("🚨 User is blacklisted!");
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
         }
+
+        console.log("✅ User is NOT blacklisted, proceeding with form submission...");
 
         const age = document.getElementById("age").value.trim();
         const reason = document.getElementById("whyJoin").value.trim();
@@ -81,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     title: "📢 Nauja Aplikacija!",
                     color: 16711680,
                     fields: [
-                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true }, // Use username in the embed
+                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
                         { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
                         { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
@@ -122,49 +128,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             responseMessage.style.color = "red";
         });
     });
-
-    // --- Admin Authentication ---
-    const ADMIN_PASSWORD = "987412365"; 
-
-    function requestPassword() {
-        const password = prompt("🔑 Enter admin password:");
-        if (password === ADMIN_PASSWORD) {
-            sessionStorage.setItem("adminAuth", "true"); 
-            alert("✅ Authentication successful! You can now toggle status.");
-        } else {
-            alert("❌ Invalid password!");
-        }
-    }
-
-    // --- Toggle Status and Save to JSONBin ---
-    async function toggleStatus() {
-        const isAuthenticated = sessionStorage.getItem("adminAuth") === "true";
-
-        if (!isAuthenticated) {
-            requestPassword();
-            return;
-        }
-
-        const newStatus = statusDisplay.textContent.includes("Uždarytos") ? "online" : "offline";
-
-        try {
-            await fetch(JSONBIN_URL, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Master-Key": API_KEY,
-                },
-                body: JSON.stringify({ status: newStatus, blacklist: blacklist })
-            });
-
-            updateStatusUI(newStatus);
-        } catch (error) {
-            console.error("❌ Error updating status:", error);
-        }
-    }
-
-    // Add event listener to toggle button
-    statusButton.addEventListener("click", toggleStatus);
 
     // --- Set Status on Page Load ---
     fetchStatus();
