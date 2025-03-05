@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Fetch Status and Blacklist from JSONBin ---
     async function fetchStatus() {
         try {
-            const response = await fetch(JSONBIN_URL, {
-                headers: { "X-Master-Key": API_KEY }
+            const response = await fetch("https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b", {
+                headers: { "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi." }
             });
             const data = await response.json();
 
