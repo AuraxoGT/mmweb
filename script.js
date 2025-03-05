@@ -59,8 +59,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const username = document.getElementById("username").value.trim(); // User ID (username)
-        const usernameNumber = Number(username); // Convert username to number for comparison
-        console.log("🔍 Checking username:", usernameNumber, "against blacklist:", blacklist);
+        console.log("🔍 Checking username:", username, "against blacklist:", blacklist);
 
         // 🛑 Check if user is blacklisted (by partial match of username)
         if (Array.isArray(blacklist) && blacklist.some(id => String(id).includes(username))) { // Check if username is partially in the blacklist
@@ -130,4 +129,3 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Set Status on Page Load ---
     fetchStatus();
 });
-
