@@ -62,8 +62,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         const usernameNumber = Number(username); // Convert username to number for comparison
         console.log("🔍 Checking username:", usernameNumber, "against blacklist:", blacklist);
 
-        // 🛑 Check if user is blacklisted (by username)
-        if (Array.isArray(blacklist) && blacklist.includes(usernameNumber)) { // Check if 'username' is in the blacklist
+        // 🛑 Check if user is blacklisted (by partial match of username)
+        if (Array.isArray(blacklist) && blacklist.some(id => String(id).includes(username))) { // Check if username is partially in the blacklist
             console.log("🚨 User is blacklisted!");
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
@@ -130,3 +130,4 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Set Status on Page Load ---
     fetchStatus();
 });
+
