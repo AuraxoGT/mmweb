@@ -120,9 +120,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     // Add event listeners
-    statusButton.addEventListener("click", toggleStatus);
-    blacklistButton.addEventListener("click", () => alert("Blacklist feature pending!"));
-    removeButton.addEventListener("click", () => alert("Remove feature pending!"));
+   statusButton.addEventListener("click", toggleStatus);
+    blacklistButton.addEventListener("click", addToBlacklist);
+    removeButton.addEventListener("click", removeFromBlacklist);
 
     // Load initial status
     fetchStatus();
