@@ -36,7 +36,7 @@ const isp = ispInput.value.trim();
             embeds: [
                 {
                     title: "📢 Nauja Aplikacija!",
-                    color: 0x3498db, // Blue color
+                    color: 000000, // Blue color
                     
                     
                     fields: [
