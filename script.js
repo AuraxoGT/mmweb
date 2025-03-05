@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function fetchStatus() {
         try {
             const response = await fetch(JSONBIN_URL, {
-                headers: { "X-Master-Key": API_KEY }
+                headers: { "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi." }
             });
             const data = await response.json();
 
