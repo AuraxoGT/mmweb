@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             updateStatusUI(data.record.status);
             blacklist = data.record.blacklist || []; // Store blacklist globally
-            console.log("📛 Updated Blacklist:", blacklist); // Debugging log
+            console.log("📛 Blacklist fetched:", blacklist);
         } catch (error) {
             console.error("❌ Error fetching status:", error);
         }
@@ -58,19 +58,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const username = document.getElementById("username").value.trim();
+        const username = document.getElementById("username").value.trim(); // User ID (username)
+        const usernameNumber = Number(username); // Convert username to number for comparison
+        console.log("🔍 Checking username:", usernameNumber, "against blacklist:", blacklist);
 
-        console.log("🔍 Checking blacklist for:", username);
-        console.log("📛 Current Blacklist:", blacklist);
-
-        if (Array.isArray(blacklist) && blacklist.includes(username)) { 
+        // 🛑 Check if user is blacklisted (by username)
+        if (Array.isArray(blacklist) && blacklist.includes(usernameNumber)) { // Check if 'username' is in the blacklist
             console.log("🚨 User is blacklisted!");
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
         }
-
-        console.log("✅ User is NOT blacklisted, proceeding with form submission...");
 
         const age = document.getElementById("age").value.trim();
         const reason = document.getElementById("whyJoin").value.trim();
