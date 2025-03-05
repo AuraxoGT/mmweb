@@ -134,9 +134,10 @@ button:hover {
 #statusButton {
     background: rgba(255, 255, 255, 0.1);
     padding: 8px 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 5px;
     transition: all 0.3s ease;
+    width: 140px;
 }
 
 #statusButton:hover {
@@ -174,15 +175,17 @@ button:hover {
 #blacklistButton {
     background: rgba(255, 255, 255, 0.1);
     padding: 8px 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 5px;
     transition: all 0.3s ease;
+    width: 140px;
 }
 
 #removeButton {
     background: rgba(255, 255, 255, 0.1);
     padding: 8px 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 5px;
     transition: all 0.3s ease;
+    width: 140px;
 }
