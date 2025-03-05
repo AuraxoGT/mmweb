@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Check if the status is "offline" (closed)
         const currentStatus = statusDisplay.textContent.includes("Offline") ? "offline" : "online";
         if (currentStatus === "offline") {
+            // Show the message only when the status is offline
             responseMessage.innerText = "❌ Anketos šiuo metu uždarytos. Bandykite vėliau.";
             responseMessage.style.color = "red";
             return; // Prevent the application from being submitted
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.", // Use if required
+                    "X-Master-Key": API_KEY, // Use if required
                 },
                 body: JSON.stringify({ status: newStatus })
             });
