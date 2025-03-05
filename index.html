@@ -7,42 +7,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<style>
-    body {
-        background-image: url('https://cdn.discordapp.com/attachments/1340789491564281917/1340794718526767195/1739740774386.gif?ex=67c968a3&is=67c81723&hm=d9064031eb6e6926859e6e72f9aee22e1a1da21a226f50dece5d495204b781df&');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-</style>
-    <div class="container">
-        <h2>Miela Malonu Aplikacija</h2>
-        <form id="applicationForm">
-            <label for="username">Jūsų Discord ID? (Parašius neteisinga ID su jumis nebus susisiekta):</label>
-            <input type="text" id="username" required>
+    <div class="main-container">
+        <!-- Application Form Container -->
+        <div class="container">
+            <h2>Miela Malonu Aplikacija</h2>
+            <form id="applicationForm">
+                <!-- Your form fields here (keep them as they were) -->
+            </form>
+        </div>
 
-            <label for="age">Kiek jums metų?</label>
-            <input type="number" id="age" required>
-
-            <label for="whyJoin">Kodėl norite tapti mūsų gaujos nariu?</label>
-            <textarea id="whyJoin" required></textarea>
-
-<label for="pl">Kaip vertinate savo pašaudimo lygį?</label>
-            <textarea id="pl" required></textarea>
-
-<label for="kl">Kaip vertinate savo komunikacijos lygį?</label>
-            <textarea id="kl" required></textarea>
-
-<label for="pc">Ar sutiktumėte pasidaryti pc check?</label>
-            <textarea id="pc" required></textarea>
-
-<label for="isp">Ar išpirktumete ispėjima jei jis būtų gautas dėl jūsų kaltės?</label>
-            <textarea id="isp" required></textarea>
-
-            <button type="submit">Pateikti</button>
-        </form>
-        <p id="responseMessage"></p>
+        <!-- Rules Container -->
+        <div class="rules-container">
+            <h2>Taisyklės</h2>
+            <ul class="rules-list">
+                <li>🛑 Draudžiama bet kokio tipo įžeidimai</li>
+                <li>🎤 Būtina turėti mikrofoną</li>
+                <li>🚫 Zero tolerance cheateriams</li>
+                <li>🎮 Minimalus amžius - 16 metų</li>
+                <li>💬 Privaloma lietuvių kalba</li>
+                <li>⏰ Aktyvus žaidimas bent 4 val./savaitę</li>
+                <li>📜 Privaloma laikytis Discord taisyklių</li>
+                <li>🔫 Komandinis darbas yra privalomas</li>
+                <li>📛 Netoleruojamas toksic behavior</li>
+                <li>✅ Reikia praeiti trial periodą</li>
+            </ul>
+        </div>
     </div>
 
     <script src="script.js"></script>
