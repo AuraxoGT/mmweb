@@ -10,15 +10,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const statusDisplay = document.getElementById("statusDisplay");
 
     // JSONBin.io API URL (replace with your actual URL)
-    const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; // Replace with your actual JSONBin URL
-    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.Y"; // Replace with your actual JSONBin API key (if required)
+    const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; 
+    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."; 
 
     // --- Fetch Status from JSONBin ---
     async function fetchStatus() {
         try {
             const response = await fetch(JSONBIN_URL, {
                 headers: {
-                    "X-Master-Key": API_KEY, // Use if required
+                    "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.",
                 }
             });
             const data = await response.json();
@@ -45,18 +45,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Form Submission ---
     form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
-        // Check if the status is "offline" (closed)
         const currentStatus = statusDisplay.textContent.includes("Offline") ? "offline" : "online";
         if (currentStatus === "offline") {
-            // Show the message only when the status is offline
             responseMessage.innerText = "❌ Anketos šiuo metu uždarytos. Bandykite vėliau.";
             responseMessage.style.color = "red";
-            return; // Prevent the application from being submitted
+            return;
         }
 
-        // Get input values
         const username = document.getElementById("username").value.trim();
         const age = document.getElementById("age").value.trim();
         const reason = document.getElementById("whyJoin").value.trim();
@@ -67,12 +64,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         console.log("✅ Form submitted with data:", { username, age, reason, pl, kl, pc, isp });
 
-        // Construct the Discord embed payload
         const payload = {
             embeds: [
                 {
                     title: "📢 Nauja Aplikacija!",
-                    color: 16711680, // Red color in decimal
+                    color: 16711680, 
                     fields: [
                         { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
@@ -95,7 +91,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             ]
         };
 
-        // Send data to Discord webhook
         fetch("https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -105,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (response.ok) {
                 responseMessage.innerText = `✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.`;
                 responseMessage.style.color = "green";
-                form.reset(); // Reset form fields
+                form.reset();
             } else {
                 throw new Error("❌ Failed to send application.");
             }
@@ -117,14 +112,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
 
-    // --- Admin Password Toggle ---
+    // --- Admin Authentication ---
     const ADMIN_PASSWORD = "987412365"; // Change to a secure password
-    let status = false; // Always start as Offline
 
-    async function requestPassword() {
+    function requestPassword() {
         const password = prompt("🔑 Enter admin password:");
         if (password === ADMIN_PASSWORD) {
-            localStorage.setItem("adminAuth", "true"); // Store authentication
+            sessionStorage.setItem("adminAuth", "true"); 
             alert("✅ Authentication successful! You can now toggle status.");
         } else {
             alert("❌ Invalid password!");
@@ -133,6 +127,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Toggle Status and Save to JSONBin ---
     async function toggleStatus() {
+        const isAuthenticated = sessionStorage.getItem("adminAuth") === "true";
+
+        if (!isAuthenticated) {
+            requestPassword(); // Prompt for password if not authenticated
+            return;
+        }
+
         const newStatus = statusDisplay.textContent.includes("Offline") ? "online" : "offline";
 
         try {
@@ -140,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Master-Key": API_KEY, // Use if required
+                    "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.",
                 },
                 body: JSON.stringify({ status: newStatus })
             });
