@@ -147,7 +147,19 @@ button:hover {
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.9em;
-    background: rgba(255, 0, 0, 0.3);
+    background: rgba(255, 0, 0, 0.3button {
+    background: linear-gradient(90deg, #4CAF50, #00ff88);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    margin-top: 15px;
+});
 }
 
 .status-online {
@@ -156,4 +168,21 @@ button:hover {
 
 .status-offline {
     background: rgba(255, 0, 0, 0.3) !important;
+}
+
+
+#blacklistButton {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+#removeButton {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
 }
