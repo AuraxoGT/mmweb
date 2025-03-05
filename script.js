@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const statusButton = document.getElementById("statusButton");
     const statusDisplay = document.getElementById("statusDisplay");
     const blacklistButton = document.getElementById("blacklistButton");
+    const removeButton = document.getElementById("removeButton");  // New button for removing blacklist ID
 
     // JSONBin.io API URL
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; 
@@ -171,6 +172,43 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+    // --- Remove from Blacklist ---
+    async function removeFromBlacklist() {
+        if (!authenticateAdmin()) {
+            alert("❌ Incorrect password!");
+            return;
+        }
+
+        const idToRemove = prompt("❌ Enter User ID to remove from blacklist:");
+        if (!idToRemove) {
+            alert("⚠️ Please enter a valid User ID.");
+            return;
+        }
+
+        if (!blacklist.includes(idToRemove)) {
+            alert(`⚠️ User ID "${idToRemove}" is not in the blacklist.`);
+            return;
+        }
+
+        blacklist = blacklist.filter(id => id !== idToRemove);
+
+        try {
+            await fetch(JSONBIN_URL, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY,
+                },
+                body: JSON.stringify({ status: "online", blacklist: blacklist })
+            });
+
+            alert(`✅ User ID "${idToRemove}" has been removed from the blacklist.`);
+        } catch (error) {
+            console.error("❌ Error updating blacklist:", error);
+            alert("❌ Failed to update blacklist.");
+        }
+    }
+
     // --- Toggle Status ---
     async function toggleStatus() {
         if (!authenticateAdmin()) {
@@ -199,6 +237,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Add event listeners
     statusButton.addEventListener("click", toggleStatus);
     blacklistButton.addEventListener("click", addToBlacklist);
+    removeButton.addEventListener("click", removeFromBlacklist);  // Event listener for remove button
 
     // --- Set Status on Page Load ---
     fetchStatus();
