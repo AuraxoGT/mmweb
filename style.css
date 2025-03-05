@@ -121,3 +121,39 @@ button:hover {
         padding: 20px;
     }
 }
+
+/* Admin Panel Styles */
+.admin-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    text-align: center;
+    z-index: 1000;
+}
+
+#statusButton {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+#statusButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#statusDisplay {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    background: rgba(255, 0, 0, 0.3);
+}
+
+.status-online {
+    background: rgba(0, 255, 0, 0.3) !important;
+}
+
+.status-offline {
+    background: rgba(255, 0, 0, 0.3) !important;
+}
