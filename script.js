@@ -13,16 +13,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; 
     const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."; 
 
+    // Global variable for storing blacklist
+    let blacklist = [];
+
     // --- Fetch Status and Blacklist from JSONBin ---
     async function fetchStatus() {
         try {
             const response = await fetch(JSONBIN_URL, {
-                headers: { "X-Master-Key": API_KEY }
+                headers: { "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi." }
             });
             const data = await response.json();
 
             updateStatusUI(data.record.status);
-            window.blacklist = data.record.blacklist || []; // Store blacklist globally
+            blacklist = data.record.blacklist || []; // Store blacklist globally
         } catch (error) {
             console.error("❌ Error fetching status:", error);
         }
@@ -55,9 +58,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const username = document.getElementById("username").value.trim();
+        const userID = document.getElementById("userID").value.trim(); // Add a user ID input field in the form
 
-        // 🛑 Check if user is blacklisted
-        if (window.blacklist.includes(username)) {
+        // 🛑 Check if user is blacklisted (by Discord ID)
+        if (blacklist.includes(userID)) {
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
@@ -70,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const pc = document.getElementById("pc").value.trim();
         const isp = document.getElementById("isp").value.trim();
 
-        console.log("✅ Form submitted with data:", { username, age, reason, pl, kl, pc, isp });
+        console.log("✅ Form submitted with data:", { username, userID, age, reason, pl, kl, pc, isp });
 
         const payload = {
             embeds: [
@@ -78,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     title: "📢 Nauja Aplikacija!",
                     color: 16711680,
                     fields: [
-                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
+                        { name: "👤 Asmuo", value: `<@${userID}> (${username})`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
                         { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
                         { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
@@ -151,7 +155,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "Content-Type": "application/json",
                     "X-Master-Key": API_KEY,
                 },
-                body: JSON.stringify({ status: newStatus, blacklist: window.blacklist })
+                body: JSON.stringify({ status: newStatus, blacklist: blacklist })
             });
 
             updateStatusUI(newStatus);
