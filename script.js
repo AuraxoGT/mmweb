@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <hr>
             `).join("");
         } catch (error) {
-            console.error("❌ Error fetching applications:", error);
+            console.error("❌ Error fetching applications:, error");
             applicationsList.innerHTML = "<p>⚠️ Failed to load applications.</p>";
         }
     }
