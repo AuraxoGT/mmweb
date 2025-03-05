@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         .then(response => {
             if (response.ok) {
-                responseMessage.innerText = ✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.;
+                responseMessage.innerText = "✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}".;
                 responseMessage.style.color = "green";
                 form.reset();
             } else {
