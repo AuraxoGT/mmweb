@@ -79,6 +79,47 @@ author: {
             console.error("Error:", error);
             responseMessage.innerText = "❌ Nepavyko išsiūsti aplikacijos bandykite dar karta.";
             responseMessage.style.color = "red";
+
+// Set your secret password here (change 'YOUR_PASSWORD' to your actual password)
+const ADMIN_PASSWORD = 'YOUR_PASSWORD';
+let status = false;
+
+function requestPassword() {
+    const password = prompt('Enter admin password:');
+    if(password === ADMIN_PASSWORD) {
+        toggleStatus();
+        // Store authentication for 1 hour (optional)
+        localStorage.setItem('adminAuth', Date.now());
+    } else {
+        alert('Invalid password!');
+    }
+}
+
+function toggleStatus() {
+    status = !status;
+    const statusDisplay = document.getElementById('statusDisplay');
+    const statusButton = document.getElementById('statusButton');
+    
+    if(status) {
+        statusDisplay.textContent = 'Status: Online';
+        statusDisplay.classList.add('status-online');
+        statusDisplay.classList.remove('status-offline');
+        statusButton.textContent = '🟢 Active Control';
+    } else {
+        statusDisplay.textContent = 'Status: Offline';
+        statusDisplay.classList.add('status-offline');
+        statusDisplay.classList.remove('status-online');
+        statusButton.textContent = '🔴 Status Control';
+    }
+}
+
+// Check existing authentication on page load
+window.onload = function() {
+    const authTime = localStorage.getItem('adminAuth');
+    if(authTime && (Date.now() - authTime < 3600000)) { // 1 hour validity
+        toggleStatus();
+    }
+}
         });
     });
 });
