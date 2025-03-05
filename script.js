@@ -67,14 +67,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Function to authenticate admin
     function authenticateAdmin() {
-        return sessionStorage.getItem("adminAuth") === "true";  // Check session storage for admin status
+        return localStorage.getItem("adminAuth") === "true";  // Check localStorage for admin status
     }
 
     // Function to request password (for new sessions or when unauthenticated)
     function requestPassword() {
         const password = prompt("🔑 Enter admin password:");
         if (password === ADMIN_PASSWORD) {
-            sessionStorage.setItem("adminAuth", "true");  // Store admin auth in session
+            localStorage.setItem("adminAuth", "true");  // Store admin auth in localStorage
             alert("✅ Authentication successful! You can now toggle status and manage blacklist.");
         } else {
             alert("❌ Invalid password!");
