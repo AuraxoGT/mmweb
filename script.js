@@ -130,3 +130,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Set Status on Page Load ---
     fetchStatus();
 });
+ async function toggleStatus() {
+        const newStatus = statusDisplay.textContent.includes("Offline") ? "online" : "offline";
+
+        try {
+            await fetch(JSONBIN_URL, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY, // Use if required
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            updateStatusUI(newStatus);
+        } catch (error) {
+            console.error("❌ Error updating status:", error);
+        }
+    }
+
+    // Add event listener to toggle button
+    statusButton.addEventListener("click", toggleStatus);
+
+    // --- Set Status on Page Load ---
+    fetchStatus();
+});
