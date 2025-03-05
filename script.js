@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // JSONBin.io API URL (replace with your actual URL)
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; // Replace with your actual JSONBin URL
-    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."; // Replace with your actual JSONBin API key (if required)
+    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.Y"; // Replace with your actual JSONBin API key (if required)
 
     // --- Fetch Status from JSONBin ---
     async function fetchStatus() {
@@ -35,11 +35,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             statusDisplay.classList.add("status-online");
             statusDisplay.classList.remove("status-offline");
             statusButton.textContent = "🟢 Active Control";
+            form.querySelector('button').disabled = false; // Enable the submit button
         } else {
             statusDisplay.textContent = "❌ Status: Offline";
             statusDisplay.classList.add("status-offline");
             statusDisplay.classList.remove("status-online");
             statusButton.textContent = "🔴 Status Control";
+            form.querySelector('button').disabled = true; // Disable the submit button
+            responseMessage.innerText = "❌ Anketos šiuo metu uždarytos"; // Show the closed form message
+            responseMessage.style.color = "red";
         }
     }
 
@@ -108,24 +112,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
 
-    // --- Admin Password Toggle --- 
+    // --- Admin Password Toggle ---
     const ADMIN_PASSWORD = "987412365"; // Change to a secure password
 
-    // Check if admin is already authenticated
-    function isAdminAuthenticated() {
+    // Check if the user is authorized (admin)
+    function checkAdminAuthorization() {
         return localStorage.getItem("adminAuth") === "true";
     }
 
-    // Request admin password and authenticate
-    async function requestPassword() {
-        if (isAdminAuthenticated()) {
-            alert("✅ Already authenticated. You can now toggle the status.");
-            return;
-        }
-
+    // Request admin password for authorization
+    function requestPassword() {
         const password = prompt("🔑 Enter admin password:");
         if (password === ADMIN_PASSWORD) {
-            localStorage.setItem("adminAuth", "true"); // Store authentication
+            // Store the authentication state in localStorage
+            localStorage.setItem("adminAuth", "true");
             alert("✅ Authentication successful! You can now toggle status.");
         } else {
             alert("❌ Invalid password!");
@@ -134,8 +134,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Toggle Status and Save to JSONBin ---
     async function toggleStatus() {
-        if (!isAdminAuthenticated()) {
-            alert("❌ You are not authorized to change the status.");
+        if (!checkAdminAuthorization()) {
+            requestPassword(); // Prompt for password if not authorized
             return;
         }
 
@@ -162,9 +162,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Set Status on Page Load ---
     fetchStatus();
-
-    // --- Admin Authentication Check on Page Load ---
-    if (isAdminAuthenticated()) {
-        alert("✅ Already authenticated as admin. You can now control the status.");
-    }
 });
