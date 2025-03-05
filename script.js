@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // --- Admin Password Toggle ---
-    const ADMIN_PASSWORD = "AuraxoGT123CivilisLTU";
+    const ADMIN_PASSWORD = "987412365";
     let status = false;
 
     function requestPassword() {
