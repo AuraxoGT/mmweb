@@ -154,4 +154,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Set Status on Page Load ---
     fetchStatus();
-});
+}
