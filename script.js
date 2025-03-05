@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
     console.log("✅ DOM fully loaded!");
 
+    // Get elements
     const form = document.getElementById("applicationForm");
     const responseMessage = document.createElement("p");
     form.appendChild(responseMessage);
@@ -10,14 +11,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const blacklistButton = document.getElementById("blacklistButton");
     const removeButton = document.getElementById("removeButton");
 
+    // JSONBin.io API URL
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b";
     const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.";
 
+    // Global variables
     let blacklist = [];
     let lastStatus = null;
-    let lastBlacklist = "";
 
-    // --- Fetch Status and Blacklist ---
+    // --- Fetch Status and Blacklist from JSONBin ---
     async function fetchStatus() {
         try {
             const response = await fetch(JSONBIN_URL, {
@@ -27,50 +29,102 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             console.log("✅ Fetched Data from JSONBin:", data);
 
-            // Update UI only if changes detected
+            // Reload only if status or blacklist has changed
             if (lastStatus !== data.record.status || JSON.stringify(blacklist) !== JSON.stringify(data.record.blacklist)) {
                 lastStatus = data.record.status;
                 blacklist = data.record.blacklist || [];
                 updateStatusUI(lastStatus);
-                console.log("🔄 UI updated due to status/blacklist change");
+                console.log("🔄 Status or blacklist changed. Updating UI...");
             }
+
         } catch (error) {
             console.error("❌ Error fetching status:", error);
         }
     }
 
+    // --- Update Status UI ---
     function updateStatusUI(status) {
         if (status === "online") {
             statusDisplay.textContent = "✅ Anketos: Atidarytos";
             statusDisplay.classList.add("status-online");
             statusDisplay.classList.remove("status-offline");
+            statusButton.textContent = "🟢 Active Control";
         } else {
             statusDisplay.textContent = "❌ Anketos: Uždarytos";
             statusDisplay.classList.add("status-offline");
             statusDisplay.classList.remove("status-online");
+            statusButton.textContent = "🔴 Status Control";
         }
     }
 
-    setInterval(fetchStatus, 5000);
+    // --- Periodic Status Check ---
+    setInterval(fetchStatus, 5000); // Check every 5 seconds
 
-    // --- Secure Admin Authentication ---
-    const ADMIN_PASSWORD = "987412365";
-
+    // --- Admin Authentication ---
     function authenticateAdmin() {
-        return sessionStorage.getItem("adminAuth") === "true";
+        return sessionStorage.getItem("adminAuth") === "true"; // Use sessionStorage (resets on browser close)
     }
 
     function requestPassword() {
         const password = prompt("🔑 Enter admin password:");
-        if (password === ADMIN_PASSWORD) {
-            sessionStorage.setItem("adminAuth", "true");
+        if (password === "987412365") {
+            sessionStorage.setItem("adminAuth", "true"); // Store admin auth in sessionStorage
             alert("✅ Authentication successful!");
         } else {
             alert("❌ Invalid password!");
         }
     }
 
-    async function updateData(newStatus, newBlacklist) {
+    // --- Add to Blacklist ---
+    async function addToBlacklist() {
+        if (!authenticateAdmin()) {
+            requestPassword();
+            return;
+        }
+
+        const newId = prompt("🚫 Enter User ID to blacklist:");
+        if (!newId || blacklist.includes(newId)) {
+            alert(`⚠️ User ID "${newId}" is invalid or already blacklisted.`);
+            return;
+        }
+
+        blacklist.push(newId);
+        await updateJSONBin();
+        alert(`✅ User ID "${newId}" has been blacklisted.`);
+    }
+
+    // --- Remove from Blacklist ---
+    async function removeFromBlacklist() {
+        if (!authenticateAdmin()) {
+            requestPassword();
+            return;
+        }
+
+        const idToRemove = prompt("❌ Enter User ID to remove from blacklist:");
+        if (!idToRemove || !blacklist.includes(idToRemove)) {
+            alert(`⚠️ User ID "${idToRemove}" is not in the blacklist.`);
+            return;
+        }
+
+        blacklist = blacklist.filter(id => id !== idToRemove);
+        await updateJSONBin();
+        alert(`✅ User ID "${idToRemove}" has been removed.`);
+    }
+
+    // --- Toggle Status ---
+    async function toggleStatus() {
+        if (!authenticateAdmin()) {
+            requestPassword();
+            return;
+        }
+
+        const newStatus = statusDisplay.textContent.includes("Uždarytos") ? "online" : "offline";
+        await updateJSONBin(newStatus);
+        updateStatusUI(newStatus);
+    }
+
+    // --- Update JSONBin ---
+    async function updateJSONBin(newStatus = lastStatus) {
         try {
             await fetch(JSONBIN_URL, {
                 method: "PUT",
@@ -78,54 +132,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "Content-Type": "application/json",
                     "X-Master-Key": API_KEY,
                 },
-                body: JSON.stringify({ status: newStatus, blacklist: newBlacklist })
+                body: JSON.stringify({ status: newStatus, blacklist })
             });
-            lastStatus = newStatus;
-            lastBlacklist = JSON.stringify(newBlacklist);
-            updateStatusUI(newStatus);
+
+            console.log("✅ Data updated successfully in JSONBin.");
         } catch (error) {
-            console.error("❌ Error updating data:", error);
-            alert("❌ Failed to update status or blacklist.");
+            console.error("❌ Error updating JSONBin:", error);
         }
     }
 
-    async function toggleStatus() {
-        if (!authenticateAdmin()) {
-            requestPassword();
-            return;
-        }
-        const newStatus = lastStatus === "offline" ? "online" : "offline";
-        await updateData(newStatus, blacklist);
-    }
-
-    async function addToBlacklist() {
-        if (!authenticateAdmin()) {
-            requestPassword();
-            return;
-        }
-        const newId = prompt("🚫 Enter User ID to blacklist:");
-        if (!newId || blacklist.includes(newId)) {
-            alert("⚠️ Invalid or duplicate User ID.");
-            return;
-        }
-        blacklist.push(newId);
-        await updateData(lastStatus, blacklist);
-    }
-
-    async function removeFromBlacklist() {
-        if (!authenticateAdmin()) {
-            requestPassword();
-            return;
-        }
-        const idToRemove = prompt("❌ Enter User ID to remove:");
-        if (!idToRemove || !blacklist.includes(idToRemove)) {
-            alert("⚠️ User ID not found in blacklist.");
-            return;
-        }
-        blacklist = blacklist.filter(id => id !== idToRemove);
-        await updateData(lastStatus, blacklist);
-    }
-
+    // --- Form Submission ---
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -137,21 +153,62 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const username = document.getElementById("username").value.trim();
         if (blacklist.includes(username)) {
-            responseMessage.innerText = "🚫 Jūs esate užblokuotas.";
+            responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
         }
 
-        console.log("✅ Form submitted with username:", username);
+        const age = document.getElementById("age").value.trim();
+        const reason = document.getElementById("whyJoin").value.trim();
+        const pl = document.getElementById("pl").value.trim();
+        const kl = document.getElementById("kl").value.trim();
+        const pc = document.getElementById("pc").value.trim();
+        const isp = document.getElementById("isp").value.trim();
 
-        responseMessage.innerText = `✅ Aplikacija pateikta!`;
-        responseMessage.style.color = "green";
-        form.reset();
+        console.log("✅ Form submitted with data:", { username, age, reason, pl, kl, pc, isp });
+
+        const payload = {
+            embeds: [
+                {
+                    title: "📢 Nauja Aplikacija!",
+                    color: 16711680,
+                    fields: [
+                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
+                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
+                        { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
+                        { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
+                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
+                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
+                    ],
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        };
+
+        fetch("https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).then(response => {
+            if (response.ok) {
+                responseMessage.innerText = `✅ Aplikacija pateikta!`;
+                responseMessage.style.color = "green";
+                form.reset();
+            } else {
+                throw new Error("❌ Failed to send application.");
+            }
+        }).catch(error => {
+            responseMessage.innerText = "❌ Nepavyko išsiųsti aplikacijos.";
+            responseMessage.style.color = "red";
+        });
     });
 
+    // Add event listeners
     statusButton.addEventListener("click", toggleStatus);
     blacklistButton.addEventListener("click", addToBlacklist);
     removeButton.addEventListener("click", removeFromBlacklist);
 
+    // Load initial status
     fetchStatus();
 });
