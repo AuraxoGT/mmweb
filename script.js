@@ -48,12 +48,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             statusDisplay.textContent = "✅ Anketos: Atidarytos";
             statusDisplay.classList.add("status-online");
             statusDisplay.classList.remove("status-offline");
-            statusButton.textContent = "🟢 Active Control";
+            statusButton.textContent = "🟢 Uždaryti Anketas";
         } else {
             statusDisplay.textContent = "❌ Anketos: Uždarytos";
             statusDisplay.classList.add("status-offline");
             statusDisplay.classList.remove("status-online");
-            statusButton.textContent = "🔴 Status Control";
+            statusButton.textContent = "🔴 Atidaryti Anketas";
         }
     }
 
