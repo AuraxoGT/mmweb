@@ -29,11 +29,14 @@ input, textarea {
     padding: 10px;
     border-radius: 8px;
     border: none;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6); /* Black with 60% transparency */
+    padding: 20px;
+    border-radius: 10px;
     color: white;
     outline: none;
     font-size: 16px;
     transition: 0.3s ease-in-out;
+
 }
 
 /* Glow Effect on Focus */
