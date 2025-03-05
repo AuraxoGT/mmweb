@@ -81,7 +81,7 @@ author: {
             responseMessage.style.color = "red";
 
 // Set your secret password here (change 'YOUR_PASSWORD' to your actual password)
-const ADMIN_PASSWORD = 'YOUR_PASSWORD';
+const ADMIN_PASSWORD = 'AuraxoGT123CivilisLTU';
 let status = false;
 
 function requestPassword() {
