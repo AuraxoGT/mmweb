@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const username = document.getElementById("username").value.trim(); // User ID (username)
-
+        const usernameNumber = username
         // Debugging: Log the username to check if it's correct
         console.log("Username to check:", username);
 
