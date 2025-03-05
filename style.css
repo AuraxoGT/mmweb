@@ -1,43 +1,72 @@
 /* General Styles */
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    background: rgba(0, 0, 0, 0.6); /* Black with 60% transparency */
-    padding: 20px;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5) url('https://cdn.discordapp.com/attachments/1340789491564281917/1340794718526767195/1739740774386.gif?ex=67c968a3&is=67c81723&hm=d9064031eb6e6926859e6e72f9aee22e1a1da21a226f50dece5d495204b781df&');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: white;
+    margin: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    min-height: 100vh;
 }
 
-/* Glassmorphism Effect */
-.container {
-    background: rgba(40, 40, 40, 0.3);
+/* Main Layout */
+.main-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Glassmorphism Containers */
+.container, .rules-container {
+    background: rgba(40, 40, 40, 0.5);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     padding: 25px;
     border-radius: 15px;
-    width: 400px;
-    text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.form-container {
-    background: rgba(0, 0, 0, 0.6); /* Black with 60% transparency */
-    padding: 20px;
-    border-radius: 10px;
+
+/* Application Form Container */
+.container {
+    width: 600px;
+    text-align: center;
 }
-/* Input Fields */
-input, textarea {
+
+/* Rules Container */
+.rules-container {
+    width: 400px;
+    color: white;
+}
+
+/* Rules List Styling */
+.rules-list {
+    text-align: left;
+    padding: 0 20px;
+    list-style-type: none;
+}
+
+.rules-list li {
+    margin-bottom: 15px;
+    font-size: 14px;
+    padding-left: 1.5em;
+    text-indent: -1.5em;
+}
+
+/* Form Elements */
+input, textarea, select {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
     border-radius: 8px;
     border: none;
-    background: rgba(0, 0, 0, 0.6); /* Black with 60% transparency */
-    padding: 10px;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     outline: none;
     font-size: 16px;
@@ -45,13 +74,15 @@ input, textarea {
     resize: none;
 }
 
-/* Glow Effect on Focus */
-input:focus, textarea:focus {
+textarea {
+    min-height: 80px;
+}
+
+input:focus, textarea:focus, select:focus {
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 10px rgba(72, 255, 72, 0.6);
 }
 
-/* Button Styling */
 button {
     background: linear-gradient(90deg, #4CAF50, #00ff88);
     color: white;
@@ -62,9 +93,10 @@ button {
     font-size: 16px;
     font-weight: bold;
     transition: all 0.3s ease-in-out;
+    width: 100%;
+    margin-top: 15px;
 }
 
-/* Button Hover Effect */
 button:hover {
     background: linear-gradient(90deg, #00ff88, #4CAF50);
     box-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
@@ -72,9 +104,20 @@ button:hover {
 }
 
 /* Responsive Design */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .container, .rules-container {
+        width: 90%;
+        max-width: 600px;
+    }
+}
+
 @media (max-width: 400px) {
     .container {
-        width: 90%;
         padding: 20px;
     }
 }
