@@ -84,28 +84,71 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function toggleStatus() {
-        status = !status;
-        
-        if (status) {
-            statusDisplay.textContent = "Status: Online";
+  document.addEventListener("DOMContentLoaded", async function () {
+    console.log("✅ DOM fully loaded!");
+
+    // Get elements
+    const statusButton = document.getElementById("statusButton");
+    const statusDisplay = document.getElementById("statusDisplay");
+
+    // Replace this with your actual JSONBin.io API URL
+    const JSONBIN_URL = "https://api.jsonbin.io/v3/b/YOUR-BIN-ID";
+    const API_KEY = "YOUR-SECRET-API-KEY"; // (If required)
+
+    // --- Fetch Status from JSONBin ---
+    async function fetchStatus() {
+        try {
+            const response = await fetch(JSONBIN_URL, {
+                headers: {
+                    "X-Master-Key": API_KEY, // Use if required
+                }
+            });
+            const data = await response.json();
+            updateStatusUI(data.record.status);
+        } catch (error) {
+            console.error("❌ Error fetching status:", error);
+        }
+    }
+
+    // --- Update Status UI ---
+    function updateStatusUI(status) {
+        if (status === "online") {
+            statusDisplay.textContent = "✅ Status: Online";
             statusDisplay.classList.add("status-online");
             statusDisplay.classList.remove("status-offline");
             statusButton.textContent = "🟢 Active Control";
         } else {
-            statusDisplay.textContent = "Status: Offline";
+            statusDisplay.textContent = "❌ Status: Offline";
             statusDisplay.classList.add("status-offline");
             statusDisplay.classList.remove("status-online");
             statusButton.textContent = "🔴 Status Control";
         }
     }
 
-    statusButton.addEventListener("click", requestPassword);
+    // --- Toggle Status and Save to JSONBin ---
+    async function toggleStatus() {
+        const newStatus = statusDisplay.textContent.includes("Offline") ? "online" : "offline";
 
-    window.onload = function () {
-        const authTime = localStorage.getItem("adminAuth");
-        if (authTime && (Date.now() - authTime < 3600000)) { 
-            toggleStatus();
+        try {
+            await fetch(JSONBIN_URL, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY, // Use if required
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            updateStatusUI(newStatus);
+        } catch (error) {
+            console.error("❌ Error updating status:", error);
         }
-    };
+    }
+
+    // Add event listener to toggle button
+    statusButton.addEventListener("click", toggleStatus);
+
+    // Fetch current status on page load
+    fetchStatus();
 });
+
