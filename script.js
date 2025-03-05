@@ -3,42 +3,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("applicationForm");
     const responseMessage = document.getElementById("responseMessage");
-
-    console.log("Checking input fields...");
-    console.log("Username:", document.getElementById("username"));
-    console.log("Age:", document.getElementById("age"));
-    console.log("Why Join:", document.getElementById("whyJoin"));
+    const statusButton = document.getElementById("statusButton");
+    const statusDisplay = document.getElementById("statusDisplay");
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const usernameInput = document.getElementById("username");
-        const ageInput = document.getElementById("age");
-        const reasonInput = document.getElementById("whyJoin");
-        const plInput = document.getElementById("pl");
-const klInput = document.getElementById("kl");
-const pcInput = document.getElementById("pc");
-const ispInput = document.getElementById("isp");
-        const username = usernameInput.value.trim();
-        const age = ageInput.value.trim();
-        const reason = reasonInput.value.trim();
-        const kl = klInput.value.trim();
-const pl = plInput.value.trim();
-const pc = pcInput.value.trim();
-const isp = ispInput.value.trim();
+        const username = document.getElementById("username").value.trim();
+        const age = document.getElementById("age").value.trim();
+        const reason = document.getElementById("whyJoin").value.trim();
+        const kl = document.getElementById("kl").value.trim();
+        const pl = document.getElementById("pl").value.trim();
+        const pc = document.getElementById("pc").value.trim();
+        const isp = document.getElementById("isp").value.trim();
+
         console.log("✅ Submitted Data:", { username, age, reason });
 
         // Webhook URL - replace with your actual Discord webhook
         const webhookURL = "https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF";
 
-        // Construct the embed object
         const payload = {
             embeds: [
                 {
                     title: "📢 Nauja Aplikacija!",
-                    color: 000000, // Blue color
-                    
-                    
+                    color: 000000, 
                     fields: [
                         { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
@@ -48,13 +36,13 @@ const isp = ispInput.value.trim();
                         { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
                         { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
                     ],
-author: {
-                    "name" : "Miela Malonu",
-                    "icon_url" : "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
-},
+                    author: {
+                        name: "Miela Malonu",
+                        icon_url: "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif"
+                    },
                     footer: {
                         text: "Anketos | Miela Malonu",
-                        icon_url: "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif?ex=67c81723&is=67c6c5a3&hm=6e04afca43899cf0a05c048386972c8f3f6ccc2ae53f40fc9ecfb37886149356&"
+                        icon_url: "https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif"
                     },
                     timestamp: new Date().toISOString()
                 }
@@ -79,47 +67,45 @@ author: {
             console.error("Error:", error);
             responseMessage.innerText = "❌ Nepavyko išsiūsti aplikacijos bandykite dar karta.";
             responseMessage.style.color = "red";
-
-// Set your secret password here (change 'YOUR_PASSWORD' to your actual password)
-const ADMIN_PASSWORD = 'AuraxoGT123CivilisLTU';
-let status = false;
-
-function requestPassword() {
-    const password = prompt('Enter admin password:');
-    if(password === ADMIN_PASSWORD) {
-        toggleStatus();
-        // Store authentication for 1 hour (optional)
-        localStorage.setItem('adminAuth', Date.now());
-    } else {
-        alert('Invalid password!');
-    }
-}
-
-function toggleStatus() {
-    status = !status;
-    const statusDisplay = document.getElementById('statusDisplay');
-    const statusButton = document.getElementById('statusButton');
-    
-    if(status) {
-        statusDisplay.textContent = 'Status: Online';
-        statusDisplay.classList.add('status-online');
-        statusDisplay.classList.remove('status-offline');
-        statusButton.textContent = '🟢 Active Control';
-    } else {
-        statusDisplay.textContent = 'Status: Offline';
-        statusDisplay.classList.add('status-offline');
-        statusDisplay.classList.remove('status-online');
-        statusButton.textContent = '🔴 Status Control';
-    }
-}
-
-// Check existing authentication on page load
-window.onload = function() {
-    const authTime = localStorage.getItem('adminAuth');
-    if(authTime && (Date.now() - authTime < 3600000)) { // 1 hour validity
-        toggleStatus();
-    }
-}
         });
     });
+
+    // --- Admin Password Toggle ---
+    const ADMIN_PASSWORD = "AuraxoGT123CivilisLTU";
+    let status = false;
+
+    function requestPassword() {
+        const password = prompt("Enter admin password:");
+        if (password === ADMIN_PASSWORD) {
+            toggleStatus();
+            localStorage.setItem("adminAuth", Date.now());
+        } else {
+            alert("Invalid password!");
+        }
+    }
+
+    function toggleStatus() {
+        status = !status;
+        
+        if (status) {
+            statusDisplay.textContent = "Status: Online";
+            statusDisplay.classList.add("status-online");
+            statusDisplay.classList.remove("status-offline");
+            statusButton.textContent = "🟢 Active Control";
+        } else {
+            statusDisplay.textContent = "Status: Offline";
+            statusDisplay.classList.add("status-offline");
+            statusDisplay.classList.remove("status-online");
+            statusButton.textContent = "🔴 Status Control";
+        }
+    }
+
+    statusButton.addEventListener("click", requestPassword);
+
+    window.onload = function () {
+        const authTime = localStorage.getItem("adminAuth");
+        if (authTime && (Date.now() - authTime < 3600000)) { 
+            toggleStatus();
+        }
+    };
 });
