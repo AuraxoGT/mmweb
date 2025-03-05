@@ -44,7 +44,7 @@ const isp = ispInput.value.trim();
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
                         { name: "📝 Dėl ko nori i gang?", value: `**${reason}**`, inline: true },
                         { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
-                        { name: "📞 Komunikacijos lygis", value: `**${kl}** / 10`, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
                         { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
                         { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
                     ],
