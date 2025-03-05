@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // JSONBin.io API URL (replace with your actual URL)
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; // Replace with your actual JSONBin URL
-    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.Y"; // Replace with your actual JSONBin API key (if required)
+    const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."; // Replace with your actual JSONBin API key (if required)
 
     // --- Fetch Status from JSONBin ---
     async function fetchStatus() {
@@ -108,11 +108,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
 
-    // --- Admin Password Toggle ---
+    // --- Admin Password Toggle --- 
     const ADMIN_PASSWORD = "987412365"; // Change to a secure password
-    let status = false; // Always start as Offline
 
+    // Check if admin is already authenticated
+    function isAdminAuthenticated() {
+        return localStorage.getItem("adminAuth") === "true";
+    }
+
+    // Request admin password and authenticate
     async function requestPassword() {
+        if (isAdminAuthenticated()) {
+            alert("✅ Already authenticated. You can now toggle the status.");
+            return;
+        }
+
         const password = prompt("🔑 Enter admin password:");
         if (password === ADMIN_PASSWORD) {
             localStorage.setItem("adminAuth", "true"); // Store authentication
@@ -124,6 +134,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Toggle Status and Save to JSONBin ---
     async function toggleStatus() {
+        if (!isAdminAuthenticated()) {
+            alert("❌ You are not authorized to change the status.");
+            return;
+        }
+
         const newStatus = statusDisplay.textContent.includes("Offline") ? "online" : "offline";
 
         try {
@@ -147,4 +162,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Set Status on Page Load ---
     fetchStatus();
+
+    // --- Admin Authentication Check on Page Load ---
+    if (isAdminAuthenticated()) {
+        alert("✅ Already authenticated as admin. You can now control the status.");
+    }
 });
