@@ -57,11 +57,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const username = document.getElementById("username").value.trim();
-        const userID = document.getElementById("userID").value.trim(); // Add a user ID input field in the form
+       
+        const userID = document.getElementById("username").value.trim(); // Add a user ID input field in the form
 
         // 🛑 Check if user is blacklisted (by Discord ID)
-        if (blacklist.includes(userID)) {
+        if (blacklist.includes(username)) {
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
