@@ -42,7 +42,7 @@ input, textarea {
     outline: none;
     font-size: 16px;
     transition: 0.3s ease-in-out;
-
+    resize: none;
 }
 
 /* Glow Effect on Focus */
