@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 lastStatus = data.record.status;
                 blacklist = data.record.blacklist || [];
                 updateStatusUI(lastStatus);
-                console.log("🔄 Status or blacklist changed. Updating UI...");
             }
 
         } catch (error) {
@@ -46,69 +45,29 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateStatusUI(status) {
         if (status === "online") {
             statusDisplay.textContent = "✅ Anketos: Atidarytos";
-            statusDisplay.classList.add("status-online");
-            statusDisplay.classList.remove("status-offline");
-            statusButton.textContent = "🟢 Active Control";
+            document.title = "Anketos Atidarytos"; // Update title
         } else {
             statusDisplay.textContent = "❌ Anketos: Uždarytos";
-            statusDisplay.classList.add("status-offline");
-            statusDisplay.classList.remove("status-online");
-            statusButton.textContent = "🔴 Status Control";
+            document.title = "Anketos Uždarytos"; // Update title
         }
     }
 
     // --- Periodic Status Check ---
-    setInterval(fetchStatus, 5000); // Check every 5 seconds
+    setInterval(fetchStatus, 5000);
 
     // --- Admin Authentication ---
     function authenticateAdmin() {
-        return sessionStorage.getItem("adminAuth") === "true"; // Use sessionStorage (resets on browser close)
+        return sessionStorage.getItem("adminAuth") === "true";
     }
 
     function requestPassword() {
         const password = prompt("🔑 Enter admin password:");
         if (password === "987412365") {
-            sessionStorage.setItem("adminAuth", "true"); // Store admin auth in sessionStorage
+            sessionStorage.setItem("adminAuth", "true");
             alert("✅ Authentication successful!");
         } else {
             alert("❌ Invalid password!");
         }
-    }
-
-    // --- Add to Blacklist ---
-    async function addToBlacklist() {
-        if (!authenticateAdmin()) {
-            requestPassword();
-            return;
-        }
-
-        const newId = prompt("🚫 Enter User ID to blacklist:");
-        if (!newId || blacklist.includes(newId)) {
-            alert(`⚠️ User ID "${newId}" is invalid or already blacklisted.`);
-            return;
-        }
-
-        blacklist.push(newId);
-        await updateJSONBin();
-        alert(`✅ User ID "${newId}" has been blacklisted.`);
-    }
-
-    // --- Remove from Blacklist ---
-    async function removeFromBlacklist() {
-        if (!authenticateAdmin()) {
-            requestPassword();
-            return;
-        }
-
-        const idToRemove = prompt("❌ Enter User ID to remove from blacklist:");
-        if (!idToRemove || !blacklist.includes(idToRemove)) {
-            alert(`⚠️ User ID "${idToRemove}" is not in the blacklist.`);
-            return;
-        }
-
-        blacklist = blacklist.filter(id => id !== idToRemove);
-        await updateJSONBin();
-        alert(`✅ User ID "${idToRemove}" has been removed.`);
     }
 
     // --- Toggle Status ---
@@ -118,13 +77,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const newStatus = statusDisplay.textContent.includes("Uždarytos") ? "online" : "offline";
+        const newStatus = lastStatus === "offline" ? "online" : "offline";
         await updateJSONBin(newStatus);
         updateStatusUI(newStatus);
     }
 
     // --- Update JSONBin ---
-    async function updateJSONBin(newStatus = lastStatus) {
+    async function updateJSONBin(newStatus) {
         try {
             await fetch(JSONBIN_URL, {
                 method: "PUT",
@@ -134,8 +93,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 },
                 body: JSON.stringify({ status: newStatus, blacklist })
             });
-
-            console.log("✅ Data updated successfully in JSONBin.");
         } catch (error) {
             console.error("❌ Error updating JSONBin:", error);
         }
@@ -158,56 +115,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const age = document.getElementById("age").value.trim();
-        const reason = document.getElementById("whyJoin").value.trim();
-        const pl = document.getElementById("pl").value.trim();
-        const kl = document.getElementById("kl").value.trim();
-        const pc = document.getElementById("pc").value.trim();
-        const isp = document.getElementById("isp").value.trim();
-
-        console.log("✅ Form submitted with data:", { username, age, reason, pl, kl, pc, isp });
-
-        const payload = {
-            embeds: [
-                {
-                    title: "📢 Nauja Aplikacija!",
-                    color: 16711680,
-                    fields: [
-                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
-                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
-                        { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
-                        { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
-                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
-                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
-                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
-                    ],
-                    timestamp: new Date().toISOString()
-                }
-            ]
-        };
-
-        fetch("https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }).then(response => {
-            if (response.ok) {
-                responseMessage.innerText = `✅ Aplikacija pateikta!`;
-                responseMessage.style.color = "green";
-                form.reset();
-            } else {
-                throw new Error("❌ Failed to send application.");
-            }
-        }).catch(error => {
-            responseMessage.innerText = "❌ Nepavyko išsiųsti aplikacijos.";
-            responseMessage.style.color = "red";
-        });
+        alert("✅ Aplikacija pateikta!");
+        form.reset();
     });
 
     // Add event listeners
     statusButton.addEventListener("click", toggleStatus);
-    blacklistButton.addEventListener("click", addToBlacklist);
-    removeButton.addEventListener("click", removeFromBlacklist);
+    blacklistButton.addEventListener("click", () => alert("Blacklist feature pending!"));
+    removeButton.addEventListener("click", () => alert("Remove feature pending!"));
 
     // Load initial status
     fetchStatus();
