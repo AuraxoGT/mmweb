@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch(JSONBIN_URL, {
                 headers: {
-                    "X-Master-Key": $2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi., // Use if required
+                    "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.", // Use if required
                 }
             });
             const data = await response.json();
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Master-Key": $2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi., // Use if required
+                    "X-Master-Key": "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.", // Use if required
                 },
                 body: JSON.stringify({ status: newStatus })
             });
