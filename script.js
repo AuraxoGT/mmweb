@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Accept or Deny Applications ---
     async function updateApplicationStatus(username, newStatus) {
         try {
-            const response = await fetch(JSONBIN_URL, {
+            const response = await fetch(JSONBIN_URL , {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
