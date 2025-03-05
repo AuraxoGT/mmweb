@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // --- Event Listeners ---
     statusButton.addEventListener("click", function() {
         const password = prompt("Enter admin password:");
-        if (password === "YOUR_SECURE_PASSWORD") { // Set your password here
+        if (password === "987412365") { // Set your password here
             toggleStatus();
         } else {
             alert("Invalid password!");
