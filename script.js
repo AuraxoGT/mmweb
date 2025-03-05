@@ -85,13 +85,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                     title: "📢 Nauja Aplikacija!",
                     color: 16711680,
                     fields: [
-                        { name: "👤 Asmuo", value: `<@${username}>` , inline: true },
-                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
-                        { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
-                        { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
-                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
-                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
-                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
+                        { name: "👤 Asmuo", value: <@${username}>, inline: true },
+                        { name: "🎂 Metai", value: **${age}**, inline: true },
+                        { name: "📝 Kodėl nori prisijungti?", value: **${reason}**, inline: true },
+                        { name: "🔫 Pašaudymo lygis", value: **${pl} / 10**, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: **${kl} / 10**, inline: true },
+                        { name: "🖥️ PC Check", value: **${pc}**, inline: true },
+                        { name: "🚫 Ispėjimo išpirkimas", value: **${isp}**, inline: true },
                     ],
                     author: {
                         name: "Miela Malonu",
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         .then(response => {
             if (response.ok) {
-                responseMessage.innerText = "✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.";
+                responseMessage.innerText = ✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.;
                 responseMessage.style.color = "green";
                 form.reset();
             } else {
@@ -129,4 +129,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // --- Set Status on Page Load ---
     fetchStatus();
-})
+});
