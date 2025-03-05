@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log("Username to check:", username);
 
         // 🛑 Check if user is blacklisted (by username)
-        if (blacklist.some(entry => entry.toString().includes(usernameInput))) { // Check if 'username' is in the blacklist
+        if (Array.isArray(blacklist) && blacklist.includes(usernameNumber)) { // Check if 'username' is in the blacklist
             responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
             responseMessage.style.color = "red";
             return;
