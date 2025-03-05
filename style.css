@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    background: linear-gradient(135deg, #0f0f0f, #1e1e1e);
+    background: url('https://cdn.discordapp.com/attachments/1340789491564281917/1340794719076356116/1739740774386.gif') center/cover no-repeat fixed;
     color: white;
     display: flex;
     justify-content: center;
@@ -20,6 +20,17 @@ body {
     width: 320px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+/* Branding GIF as a Decorative Logo */
+.branding {
+    width: 100px;
+    height: 100px;
+    background: url('https://cdn.discordapp.com/attachments/1340789491564281917/1340794718526767195/1739740774386.gif') center/cover no-repeat;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
 }
 
 /* Input Fields */
