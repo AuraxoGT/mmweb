@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miela Malonu Aplikacija</title>
+    <title>Anketos Uždarytos</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,35 +11,30 @@
         <!-- Application Form Container -->
         <div class="container">
             <h2>Miela Malonu Aplikacija</h2>
+            <p id="statusDisplay" class="status-offline">❌ Anketos: Uždarytos</p>
             <form id="applicationForm">
-                <!-- Your form fields here (keep them as they were) -->
- <label for="username">Jūsų Discord ID? (Parašius neteisinga ID su jumis nebus susisiekta):</label>
-            <input type="text" id="username" required>
+                <label for="username">Jūsų Discord ID? (Parašius neteisinga ID su jumis nebus susisiekta):</label>
+                <input type="text" id="username" required>
 
-            <label for="age">Kiek jums metų?</label>
-            <input type="number" id="age" required>
+                <label for="age">Kiek jums metų?</label>
+                <input type="number" id="age" required>
 
-           
+                <label for="pl">Kaip vertinate savo pašaudimo lygį?</label>
+                <input type="number" id="pl" required>
 
-<label for="pl">Kaip vertinate savo pašaudimo lygį?</label>
-            <input type="number" id="pl" required>
+                <label for="kl">Kaip vertinate savo komunikacijos lygį?</label>
+                <input type="number" id="kl" required>
 
-<label for="kl">Kaip vertinate savo komunikacijos lygį?</label>
-            <input type="number" id="kl" required>
+                <label for="whyJoin">Kodėl norite tapti mūsų gaujos nariu?</label>
+                <textarea id="whyJoin" required></textarea>
 
- <label for="whyJoin">Kodėl norite tapti mūsų gaujos nariu?</label>
-            <textarea id="whyJoin" required></textarea>
+                <label for="pc">Ar sutiktumėte pasidaryti PC check?</label>
+                <textarea id="pc" required></textarea>
 
-<label for="pc">Ar sutiktumėte pasidaryti pc check?</label>
-            <textarea id="pc" required></textarea>
+                <label for="isp">Ar išpirktumėte įspėjimą, jei jis būtų gautas dėl jūsų kaltės?</label>
+                <textarea id="isp" required></textarea>
 
-<label for="isp">Ar išpirktumete ispėjima jei jis būtų gautas dėl jūsų kaltės?</label>
-            <textarea id="isp" required></textarea>
-
-            <button type="submit">Pateikti</button>
-<!-- Add this inside your existing container -->
-
-    
+                <button type="submit">Pateikti</button>
             </form>
         </div>
 
@@ -53,13 +48,13 @@
                 <li>📛 Pildymas kai uždarytos anketos = BLACKLIST</li>
             </ul>
         </div>
-<div class="admin-panel">
-   <button id="statusButton">🔒 Status Control</button>
-   <button id="blacklistButton">🚫 Pridėti Į Blacklist</button>
-<button id="removeButton">🚫 Pašalinti iš blacklist</button>
-<div id="applicationsList"></div>
 
-</div>
+        <!-- Admin Panel -->
+        <div class="admin-panel">
+            <button id="statusButton">🔒 Status Control</button>
+            <button id="blacklistButton">🚫 Pridėti Į Blacklist</button>
+            <button id="removeButton">🚫 Pašalinti iš Blacklist</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
