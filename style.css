@@ -14,12 +14,12 @@ body {
 
 /* Glassmorphism Effect */
 .container {
-    background: rgba(40, 40, 40, 0.5);
+    background: rgba(40, 40, 40, 0.8);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     padding: 25px;
     border-radius: 15px;
-    width: 320px;
+    width: 340px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
