@@ -8,31 +8,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const statusButton = document.getElementById("statusButton");
     const statusDisplay = document.getElementById("statusDisplay");
-
-    // Create Blacklist Button and Input
-    const blacklistContainer = document.createElement("div");
-    blacklistContainer.style.marginTop = "10px";
-    
-    const blacklistButton = document.createElement("button");
-    blacklistButton.textContent = "🚫 Add to Blacklist";
-    blacklistButton.style.display = "block";
-    blacklistButton.style.marginTop = "10px";
-    blacklistButton.style.padding = "5px";
-    
-    const blacklistInput = document.createElement("input");
-    blacklistInput.type = "text";
-    blacklistInput.placeholder = "Enter User ID";
-    blacklistInput.style.display = "block";
-    blacklistInput.style.marginTop = "5px";
-    blacklistInput.style.padding = "5px";
-
-    blacklistContainer.appendChild(blacklistInput);
-    blacklistContainer.appendChild(blacklistButton);
-    form.appendChild(blacklistContainer);
+    const blacklistButton = document.getElementById("blacklistButton");
 
     // JSONBin.io API URL
     const JSONBIN_URL = "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b"; 
     const API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."; 
+
+    // Discord Webhook
+    const WEBHOOK_URL = "https://canary.discord.com/api/webhooks/1346529699081490472/k-O-v4wKDiUjsj1w-Achvrej1Kr-W-rXqZVibcftwWFn5sMZyhIMSb9E4r975HbQI3tF";
 
     // Global variable for storing blacklist
     let blacklist = [];
@@ -45,12 +28,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
             const data = await response.json();
 
-            // Log the fetched blacklist and status
             console.log("✅ Fetched Data from JSONBin:", data);
             updateStatusUI(data.record.status);
-            blacklist = data.record.blacklist || []; // Store blacklist globally
+            blacklist = data.record.blacklist || [];
 
-            // Debugging: Log the blacklist
             console.log("Blacklist fetched:", blacklist);
         } catch (error) {
             console.error("❌ Error fetching status:", error);
@@ -72,29 +53,95 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // --- Admin Authentication ---
-    const ADMIN_PASSWORD = "987412365"; 
+    // --- Form Submission ---
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    function requestPassword() {
-        const password = prompt("🔑 Enter admin password:");
-        if (password === ADMIN_PASSWORD) {
-            sessionStorage.setItem("adminAuth", "true"); 
-            alert("✅ Authentication successful! You can now manage settings.");
-        } else {
-            alert("❌ Invalid password!");
-        }
-    }
-
-    // --- Add to Blacklist Function ---
-    async function addToBlacklist() {
-        const isAuthenticated = sessionStorage.getItem("adminAuth") === "true";
-
-        if (!isAuthenticated) {
-            requestPassword();
+        const currentStatus = statusDisplay.textContent.includes("Uždarytos") ? "offline" : "online";
+        if (currentStatus === "offline") {
+            responseMessage.innerText = "❌ Anketos šiuo metu uždarytos. Bandykite vėliau.";
+            responseMessage.style.color = "red";
             return;
         }
 
-        const newId = blacklistInput.value.trim();
+        const username = document.getElementById("username").value.trim();
+
+        console.log("Username to check:", username);
+
+        // 🛑 Check if user is blacklisted
+        if (blacklist.includes(username)) {
+            responseMessage.innerText = "🚫 Jūs esate užblokuotas ir negalite pateikti anketos!";
+            responseMessage.style.color = "red";
+            return;
+        }
+
+        const age = document.getElementById("age").value.trim();
+        const reason = document.getElementById("whyJoin").value.trim();
+        const pl = document.getElementById("pl").value.trim();
+        const kl = document.getElementById("kl").value.trim();
+        const pc = document.getElementById("pc").value.trim();
+        const isp = document.getElementById("isp").value.trim();
+
+        console.log("✅ Form submitted with data:", { username, age, reason, pl, kl, pc, isp });
+
+        const payload = {
+            embeds: [
+                {
+                    title: "📢 Nauja Aplikacija!",
+                    color: 16711680,
+                    fields: [
+                        { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
+                        { name: "🎂 Metai", value: `**${age}**`, inline: true },
+                        { name: "📝 Kodėl nori prisijungti?", value: `**${reason}**`, inline: true },
+                        { name: "🔫 Pašaudymo lygis", value: `**${pl} / 10**`, inline: true },
+                        { name: "📞 Komunikacijos lygis", value: `**${kl} / 10**`, inline: true },
+                        { name: "🖥️ PC Check", value: `**${pc}**`, inline: true },
+                        { name: "🚫 Ispėjimo išpirkimas", value: `**${isp}**`, inline: true },
+                    ],
+                    author: { name: "Miela Malonu" },
+                    footer: { text: "Anketos | Miela Malonu" },
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        };
+
+        fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (response.ok) {
+                responseMessage.innerText = `✅ Aplikacija pateikta! Su jumis bus susisiekta per Discord, ${username}.`;
+                responseMessage.style.color = "green";
+                form.reset();
+            } else {
+                throw new Error("❌ Failed to send application.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            responseMessage.innerText = "❌ Nepavyko išsiųsti aplikacijos. Bandykite dar kartą.";
+            responseMessage.style.color = "red";
+        });
+    });
+
+    // --- Admin Authentication ---
+    const ADMIN_PASSWORD = "987412365"; 
+
+    function authenticateAdmin() {
+        const password = prompt("🔑 Enter admin password:");
+        return password === ADMIN_PASSWORD;
+    }
+
+    // --- Add to Blacklist ---
+    async function addToBlacklist() {
+        if (!authenticateAdmin()) {
+            alert("❌ Incorrect password!");
+            return;
+        }
+
+        const newId = prompt("🚫 Enter User ID to blacklist:");
         if (!newId) {
             alert("⚠️ Please enter a valid User ID.");
             return;
@@ -105,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        blacklist.push(newId); // Add new ID to the array
+        blacklist.push(newId);
 
         try {
             await fetch(JSONBIN_URL, {
@@ -114,23 +161,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "Content-Type": "application/json",
                     "X-Master-Key": API_KEY,
                 },
-                body: JSON.stringify({ status: "online", blacklist: blacklist }) // Update JSONBin
+                body: JSON.stringify({ status: "online", blacklist: blacklist })
             });
 
             alert(`✅ User ID "${newId}" has been added to the blacklist.`);
-            blacklistInput.value = ""; // Clear input field
         } catch (error) {
             console.error("❌ Error updating blacklist:", error);
             alert("❌ Failed to update blacklist.");
         }
     }
 
-    // --- Toggle Status and Save to JSONBin ---
+    // --- Toggle Status ---
     async function toggleStatus() {
-        const isAuthenticated = sessionStorage.getItem("adminAuth") === "true";
-
-        if (!isAuthenticated) {
-            requestPassword();
+        if (!authenticateAdmin()) {
+            alert("❌ Incorrect password!");
             return;
         }
 
