@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             embeds: [
                 {
                     title: "📢 Nauja Aplikacija!",
-                    color: 16711680,
+                    color: 00000000,
                     fields: [
                         { name: "👤 Asmuo", value: `<@${username}>`, inline: true },
                         { name: "🎂 Metai", value: `**${age}**`, inline: true },
