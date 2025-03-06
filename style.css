@@ -25,9 +25,9 @@ body {
 
 /* Glassmorphism Containers */
 .container, .rules-container {
-    background: rgba(40, 40, 40, 0.5);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(40, 40, 40, 0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     padding: 25px;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -63,9 +63,9 @@ body {
 input, textarea, select {
     width: 100%;
     margin: 10px 0;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(0, 0, 0, 0.5);
     color: white;
     outline: none;
@@ -74,13 +74,15 @@ input, textarea, select {
     resize: none;
 }
 
-textarea {
-    min-height: 80px;
+/* Smooth Focus Effects */
+input:hover, textarea:hover, select:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 input:focus, textarea:focus, select:focus {
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 10px rgba(72, 255, 72, 0.6);
+    border: 1px solid #00ff88;
 }
 
 /* Button Styles */
@@ -96,6 +98,7 @@ button {
     transition: all 0.3s ease-in-out;
     width: 100%;
     margin-top: 15px;
+    box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
 }
 
 button:hover {
@@ -104,7 +107,13 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* Admin Panel (Updated) */
+/* Smooth Click Effect */
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Admin Panel */
 .admin-panel {
     position: fixed;
     top: 20px;
@@ -112,9 +121,9 @@ button:hover {
     text-align: center;
     z-index: 1000;
     display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center; /* Center buttons */
-    gap: 10px; /* Space between buttons */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     background: rgba(0, 0, 0, 0.6);
     padding: 15px;
     border-radius: 10px;
@@ -123,7 +132,7 @@ button:hover {
 
 /* Admin Panel Buttons */
 .admin-panel button {
-    width: 180px; /* Consistent button width */
+    width: 180px;
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
@@ -172,15 +181,23 @@ button:hover {
         position: static;
         width: 100%;
         margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .admin-panel button {
-        width: 100%;
+        width: 45%;
+        margin: 5px;
     }
 }
 
 @media (max-width: 400px) {
     .container {
         padding: 20px;
+    }
+
+    .admin-panel button {
+        width: 100%;
     }
 }
