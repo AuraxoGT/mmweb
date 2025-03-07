@@ -201,14 +201,22 @@ button:active {
         width: 100%;
     }
 }
+/* Gray Box Styling */
+.gray-box {
+    background: #2b2d31; /* Discord-like dark theme */
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+    font-family: Arial, sans-serif;
+    width: 400px;
+}
+
 /* Discord Invite Container */
 .discord-invite {
-    width: 400px;
-    background: #2b2d31;
+    width: 100%;
+    background: #23272a;
     border-radius: 8px;
     overflow: hidden;
-    font-family: Arial, sans-serif;
-    color: white;
     border: 1px solid #40444b;
 }
 
@@ -228,7 +236,7 @@ button:active {
 }
 
 /* Server Icon */
-#serverIcon {
+.server-icon {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -267,3 +275,4 @@ button:active {
 .join-button:hover {
     background: #2e8b57;
 }
+
