@@ -220,7 +220,6 @@ async function fetchDiscordInvite(inviteCode, containerClass) {
 
     if (data.guild) {
         const container = document.querySelector(`.${containerClass}`);
-
         if (!container) return console.error("Container not found!");
 
         // Create the Discord invite HTML structure dynamically
@@ -240,11 +239,11 @@ async function fetchDiscordInvite(inviteCode, containerClass) {
             </div>
         `;
 
-        // Insert the invite into the existing container
-        container.innerHTML = inviteHTML;
+        container.insertAdjacentHTML("beforeend", inviteHTML); // Append instead of replacing
     }
 }
 
-// Call the function to insert the invite into the class "invite-container"
-fetchDiscordInvite("mielamalonu", "rules-container");
+// Call function and pass the container class where you want the invite to be displayed
+fetchDiscordInvite("mielamalonu", "rules-container"); // Change class if needed
+
 
