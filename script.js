@@ -211,4 +211,29 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Load initial status
     fetchStatus();
+
 });
+
+async function fetchDiscordInvite(inviteCode) {
+    const response = await fetch(`https://discord.com/api/v9/invites/${inviteCode}?with_counts=true`);
+    const data = await response.json();
+
+    if (data.guild) {
+        document.getElementById("serverName").innerText = data.guild.name;
+        document.getElementById("memberCount").innerText = `${data.approximate_member_count} Members`;
+        document.getElementById("onlineCount").innerText = `${data.approximate_presence_count} Online`;
+        document.getElementById("inviteLink").href = `https://discord.gg/${inviteCode}`;
+        document.getElementById("serverIcon").src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png`;
+        
+        // Check if the server has a banner
+        if (data.guild.banner) {
+            document.getElementById("serverBanner").src = `https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=600`;
+        } else {
+            document.getElementById("serverBanner").style.display = "none"; // Hide if no banner
+        }
+    }
+}
+
+// Replace 'mielamalonu' with your actual invite code
+fetchDiscordInvite("mielamalonu");
+
