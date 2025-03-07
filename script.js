@@ -222,6 +222,10 @@ async function fetchDiscordInvite(inviteCode, containerClass) {
         const container = document.querySelector(`.${containerClass}`);
         if (!container) return console.error("Container not found!");
 
+        // Remove any existing invite before adding a new one
+        const oldInvite = container.querySelector(".discord-invite");
+        if (oldInvite) oldInvite.remove();
+
         // Create the Discord invite HTML structure dynamically
         const inviteHTML = `
             <div class="discord-invite">
@@ -245,5 +249,6 @@ async function fetchDiscordInvite(inviteCode, containerClass) {
 
 // Call function and pass the container class where you want the invite to be displayed
 fetchDiscordInvite("mielamalonu", "rules-container"); // Change class if needed
+
 
 
