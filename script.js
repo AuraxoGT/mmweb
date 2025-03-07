@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             BOT_TOKEN: "MTI2MzM4OTE3OTI0OTY5MjY5Mw.GydpCO.muyTBwuXYAQS8U4G1p9AqTD7kdWhHcDR4UtY5o", // ⚠️ REPLACE THIS
             REDIRECT_URI: "https://mielamalonu.xyz",
             GUILD_ID: "1325850250027597845",
-            SCOPES: ["identify", "guilds.join"]
+            SCOPES: ["identify", "guilds.json"]
         }
     };
 
