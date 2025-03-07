@@ -246,5 +246,5 @@ async function fetchDiscordInvite(inviteCode, containerClass) {
 }
 
 // Call the function to insert the invite into the class "invite-container"
-fetchDiscordInvite("mielamalonu", "invite-container");
+fetchDiscordInvite("mielamalonu", "rules-container");
 
