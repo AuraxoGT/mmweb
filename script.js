@@ -37,13 +37,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         updateInterval: null
     };
 
-    // Initialize
-    elements.form.appendChild(elements.responseMessage);
-    initializeEventListeners();
-    checkAuthState();
-    setInterval(fetchStatus, 5000);
-    fetchStatus();
-
     // ======================
     // CORE FUNCTIONS
     // ======================
