@@ -1,0 +1,74 @@
+/* styles.css - Admin Panel Styling */
+body {
+    background: url('https://cdn.discordapp.com/attachments/1340789491564281917/1340794718526767195/1739740774386.gif') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.admin-container {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.5);
+    text-align: center;
+    width: 350px;
+}
+
+h2 {
+    color: #00ff00;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn.green {
+    background: #00cc00;
+    color: white;
+}
+
+.btn.red {
+    background: #cc0000;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.applications {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.applications h3 {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
