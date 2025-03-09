@@ -54,5 +54,3 @@ async function fetchFromJsonBin(binId) {
         alert("❌ Neteisingas slaptažodis!");
         return false;
     }
-
-});
