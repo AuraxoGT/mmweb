@@ -21,72 +21,38 @@ async function fetchFromJsonBin(binId) {
 }
 
 // Function to update JSONBin
-async function updateJsonBin(binId, newData) {
-    try {
-        await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": JSONBIN_API_KEY
-            },
-            body: JSON.stringify(newData)
-        });
-        console.log("✅ Successfully updated JSONBin:", newData);
-    } catch (error) {
-        console.error("❌ Error updating JSONBin:", error);
-    }
-}
-
-// Ensure elements exist before adding event listeners
-document.addEventListener("DOMContentLoaded", async function() {
-    const closeBtn = document.getElementById("closeApplications");
-    const addBlacklistBtn = document.getElementById("addBlacklist");
-    const removeBlacklistBtn = document.getElementById("removeBlacklist");
-
-    let binData = await fetchFromJsonBin(JSONBIN_BLACKLIST_ID);
-
-    if (closeBtn) {
-        closeBtn.addEventListener("click", async function() {
-            binData.status = "offline";
-            await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
-            alert("Anketos uždarytos!");
-        });
-    } else {
-        console.warn("⚠️ closeApplications button not found!");
+ async function toggleApplicationStatus() {
+        if (!authenticateAdmin()) return;
+        const newStatus = state.lastStatus === "online" ? "offline" : "online";
+        await updateJSONBin(newStatus);
+        updateStatusDisplay();
     }
 
-    if (addBlacklistBtn) {
-        addBlacklistBtn.addEventListener("click", async function() {
-            let user = prompt("Įveskite vartotojo ID, kurį norite pridėti į Blacklist:");
-            if (user) {
-                if (!binData.blacklist.includes(user)) {
-                    binData.blacklist.push(user);
-                    await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
-                    alert(`${user} pridėtas į Blacklist.`);
-                } else {
-                    alert("Šis vartotojas jau yra Blacklist'e!");
-                }
-            }
-        });
-    } else {
-        console.warn("⚠️ addBlacklist button not found!");
+    async function addToBlacklist() {
+        if (!authenticateAdmin()) return;
+        const newId = prompt("Įveskite vartotojo ID:");
+        if (newId && !state.blacklist.includes(newId)) {
+            state.blacklist.push(newId);
+            await updateJSONBin();
+            alert(`✅ Vartotojas ${newId} užblokuotas`);
+        }
     }
 
-    if (removeBlacklistBtn) {
-        removeBlacklistBtn.addEventListener("click", async function() {
-            let user = prompt("Įveskite vartotojo ID, kurį norite pašalinti iš Blacklist:");
-            if (user) {
-                let index = binData.blacklist.indexOf(user);
-                if (index !== -1) {
-                    binData.blacklist.splice(index, 1);
-                    await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
-                    alert(`${user} pašalintas iš Blacklist.`);
-                } else {
-                    alert("Šio vartotojo nėra Blacklist'e!");
-                }
-            }
-        });
-    } else {
-        console.warn("⚠️ removeBlacklist button not found!");
+    async function removeFromBlacklist() {
+        if (!authenticateAdmin()) return;
+        const idToRemove = prompt("Įveskite vartotojo ID:");
+        if (idToRemove && state.blacklist.includes(idToRemove)) {
+            state.blacklist = state.blacklist.filter(id => id !== idToRemove);
+            await updateJSONBin();
+            alert(`✅ Vartotojas ${idToRemove} atblokuotas`);
+        }
     }
+
+    function authenticateAdmin() {
+        const password = prompt("🔑 Admin slaptažodis:");
+        if (password === "ADMIN_PASSWORD_HERE") return true;
+        alert("❌ Neteisingas slaptažodis!");
+        return false;
+    }
+
 });
