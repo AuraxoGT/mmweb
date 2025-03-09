@@ -16,7 +16,7 @@ async function fetchFromJsonBin(binId) {
         return data.record;
     } catch (error) {
         console.error("❌ Error fetching from JSONBin:", error);
-        return null;
+        return { status: "offline", blacklist: [] };
     }
 }
 
@@ -43,9 +43,12 @@ document.addEventListener("DOMContentLoaded", async function() {
     const addBlacklistBtn = document.getElementById("addBlacklist");
     const removeBlacklistBtn = document.getElementById("removeBlacklist");
 
+    let binData = await fetchFromJsonBin(JSONBIN_BLACKLIST_ID);
+
     if (closeBtn) {
         closeBtn.addEventListener("click", async function() {
-            await updateJsonBin(JSONBIN_BLACKLIST_ID, { applicationsClosed: true });
+            binData.status = "offline";
+            await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
             alert("Anketos uždarytos!");
         });
     } else {
@@ -54,15 +57,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     if (addBlacklistBtn) {
         addBlacklistBtn.addEventListener("click", async function() {
-            let user = prompt("Įveskite vartotojo vardą, kurį norite pridėti į Blacklist:");
+            let user = prompt("Įveskite vartotojo ID, kurį norite pridėti į Blacklist:");
             if (user) {
-                let blacklistData = await fetchFromJsonBin(JSONBIN_BLACKLIST_ID);
-                if (!blacklistData || !Array.isArray(blacklistData.blacklist)) {
-                    blacklistData = { blacklist: [] };
-                }
-                if (!blacklistData.blacklist.includes(user)) {
-                    blacklistData.blacklist.push(user);
-                    await updateJsonBin(JSONBIN_BLACKLIST_ID, blacklistData);
+                if (!binData.blacklist.includes(user)) {
+                    binData.blacklist.push(user);
+                    await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
                     alert(`${user} pridėtas į Blacklist.`);
                 } else {
                     alert("Šis vartotojas jau yra Blacklist'e!");
@@ -75,17 +74,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     if (removeBlacklistBtn) {
         removeBlacklistBtn.addEventListener("click", async function() {
-            let user = prompt("Įveskite vartotojo vardą, kurį norite pašalinti iš Blacklist:");
+            let user = prompt("Įveskite vartotojo ID, kurį norite pašalinti iš Blacklist:");
             if (user) {
-                let blacklistData = await fetchFromJsonBin(JSONBIN_BLACKLIST_ID);
-                if (!blacklistData || !Array.isArray(blacklistData.blacklist)) {
-                    alert("Blacklist nėra suformatuotas teisingai.");
-                    return;
-                }
-                let index = blacklistData.blacklist.indexOf(user);
+                let index = binData.blacklist.indexOf(user);
                 if (index !== -1) {
-                    blacklistData.blacklist.splice(index, 1);
-                    await updateJsonBin(JSONBIN_BLACKLIST_ID, blacklistData);
+                    binData.blacklist.splice(index, 1);
+                    await updateJsonBin(JSONBIN_BLACKLIST_ID, binData);
                     alert(`${user} pašalintas iš Blacklist.`);
                 } else {
                     alert("Šio vartotojo nėra Blacklist'e!");
