@@ -218,51 +218,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         elements.statusDisplay.textContent = state.lastStatus === "online" 
             ? "✅ Anketos: Atidarytos" 
             : "❌ Anketos: Uždarytos";
-        elements.statusDisplay.className = state.lastStatus === "online" 
-            ? "status-online" 
-            : "status-offline";
-        elements.statusButton.textContent = state.lastStatus === "online" 
-            ? "🟢 Uždaryti Anketas" 
-            : "🔴 Atidaryti Anketas";
     }
 
-    // ======================
-    // ADMIN FUNCTIONS
-    // ======================
 
-    async function toggleApplicationStatus() {
-        if (!authenticateAdmin()) return;
-        const newStatus = state.lastStatus === "online" ? "offline" : "online";
-        await updateJSONBin(newStatus);
-        updateStatusDisplay();
-    }
-
-    async function addToBlacklist() {
-        if (!authenticateAdmin()) return;
-        const newId = prompt("Įveskite vartotojo ID:");
-        if (newId && !state.blacklist.includes(newId)) {
-            state.blacklist.push(newId);
-            await updateJSONBin();
-            alert(`✅ Vartotojas ${newId} užblokuotas`);
-        }
-    }
-
-    async function removeFromBlacklist() {
-        if (!authenticateAdmin()) return;
-        const idToRemove = prompt("Įveskite vartotojo ID:");
-        if (idToRemove && state.blacklist.includes(idToRemove)) {
-            state.blacklist = state.blacklist.filter(id => id !== idToRemove);
-            await updateJSONBin();
-            alert(`✅ Vartotojas ${idToRemove} atblokuotas`);
-        }
-    }
-
-    function authenticateAdmin() {
-        const password = prompt("🔑 Admin slaptažodis:");
-        if (password === "ADMIN_PASSWORD_HERE") return true;
-        alert("❌ Neteisingas slaptažodis!");
-        return false;
-    }
 
     // ======================
     // UTILITY FUNCTIONS
