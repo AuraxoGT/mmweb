@@ -97,9 +97,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function updateStatusDisplay() {
-        elements.statusDisplay.textContent = state.lastStatus === "online" 
-            ? "✅ Anketos: Atidarytos" 
-            : "❌ Anketos: Uždarytos";
         elements.statusDisplay.className = state.lastStatus === "online" 
             ? "status-online" 
             : "status-offline";
