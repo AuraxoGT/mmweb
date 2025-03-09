@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     };
 
     const elements = {
-        statusDisplay: document.getElementById("statusDisplay"),
+       
         statusButton: document.getElementById("statusButton"),
         blacklistButton: document.getElementById("blacklistButton"),
         removeButton: document.getElementById("removeButton")
