@@ -1,27 +1,53 @@
-// admin.js - Admin Panel with JSONBin API
+document.addEventListener("DOMContentLoaded", async function () {
+    console.log("✅ Admin Panel Loaded!");
 
-const JSONBIN_API_KEY = "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi.";
-const JSONBIN_BLACKLIST_ID = "67c851f6e41b4d34e4a1358b";
+    const CONFIG = {
+        JSONBIN: {
+            URL: "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b",
+            KEY: "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."
+        }
+    };
 
-// Function to fetch data from JSONBin
-async function fetchFromJsonBin(binId) {
-    try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-            headers: {
-                "X-Master-Key": JSONBIN_API_KEY
-            }
-        });
-        const data = await response.json();
-        console.log("📥 Fetched data:", data.record);
-        return data.record;
-    } catch (error) {
-        console.error("❌ Error fetching from JSONBin:", error);
-        return { status: "offline", blacklist: [] };
+    const elements = {
+        statusDisplay: document.getElementById("statusDisplay"),
+        statusButton: document.getElementById("statusButton"),
+        blacklistButton: document.getElementById("blacklistButton"),
+        removeButton: document.getElementById("removeButton")
+    };
+
+    let state = {
+        blacklist: [],
+        lastStatus: null
+    };
+
+    initializeAdminEventListeners();
+    fetchStatus();
+
+    async function fetchStatus() {
+        try {
+            const response = await fetch(CONFIG.JSONBIN.URL, {
+                headers: { "X-Master-Key": CONFIG.JSONBIN.KEY }
+            });
+            const data = await response.json();
+            updateApplicationState(data.record);
+        } catch (error) {
+            console.error("Status fetch error:", error);
+        }
     }
-}
 
-// Function to update JSONBin
- async function toggleApplicationStatus() {
+    function updateApplicationState(data) {
+        state.lastStatus = data.status;
+        state.blacklist = data.blacklist || [];
+        updateStatusDisplay();
+    }
+
+    function initializeAdminEventListeners() {
+        elements.statusButton.addEventListener("click", toggleApplicationStatus);
+        elements.blacklistButton.addEventListener("click", addToBlacklist);
+        elements.removeButton.addEventListener("click", removeFromBlacklist);
+    }
+
+    async function toggleApplicationStatus() {
         if (!authenticateAdmin()) return;
         const newStatus = state.lastStatus === "online" ? "offline" : "online";
         await updateJSONBin(newStatus);
@@ -54,3 +80,31 @@ async function fetchFromJsonBin(binId) {
         alert("❌ Neteisingas slaptažodis!");
         return false;
     }
+
+    async function updateJSONBin(newStatus = state.lastStatus) {
+        try {
+            await fetch(CONFIG.JSONBIN.URL, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": CONFIG.JSONBIN.KEY
+                },
+                body: JSON.stringify({ status: newStatus, blacklist: state.blacklist })
+            });
+        } catch (error) {
+            console.error("JSONBin update error:", error);
+        }
+    }
+
+    function updateStatusDisplay() {
+        elements.statusDisplay.textContent = state.lastStatus === "online" 
+            ? "✅ Anketos: Atidarytos" 
+            : "❌ Anketos: Uždarytos";
+        elements.statusDisplay.className = state.lastStatus === "online" 
+            ? "status-online" 
+            : "status-offline";
+        elements.statusButton.textContent = state.lastStatus === "online" 
+            ? "🟢 Uždaryti Anketas" 
+            : "🔴 Atidaryti Anketas";
+    }
+});
