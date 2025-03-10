@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Configuration
     const CONFIG = {
         JSONBIN: {
-            URL: "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b",
-            KEY: "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."
+            URL: "https://api.jsonbin.io/v3/b/67cf56438561e97a50e9929a",
+            KEY: "$2a$10$bWJWCoiwQNF32RfO4NqJVOwbygKJ5WRVCRcvdGJoRiGCKsmu15mPy"
         },
         DISCORD: {
             CLIENT_ID: "1263389179249692693",
@@ -130,46 +130,42 @@ document.addEventListener("DOMContentLoaded", async function () {
         elements.form.reset();
     }
 
-    function createApplicationEmbed(data, appId) {
-        return {
-            title: "📢 Nauja Aplikacija!",
-            color: 0x000000,
-            fields: [
-                { name: "👤 Asmuo", value: `<@${data.userId}>`, inline: true },
-                { name: "🎂 Metai", value: `**${data.age}**`, inline: true },
-                { name: "📝 Priežastis", value: `**${data.reason}**`, inline: true },
-                { name: "🔫 Pašaudymas", value: `**${data.pl}/10**`, inline: true },
-                { name: "📞 Komunikacija", value: `**${data.kl}/10**`, inline: true },
-                { name: "🖥️ PC Check", value: `**${data.pc}**`, inline: true },
-                { name: "🚫 Ispėjimai", value: `**${data.isp}**`, inline: true }
-            ],
-            timestamp: new Date().toISOString(),
-            footer: { text: `Application ID: ${appId}` }
-        };
-    }
+    document.getElementById("application-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-    function createActionButtons(appId) {
-        const sanitizedId = appId.replace(/[^a-z0-9_-]/gi, "");
-        return {
-            type: 1,
-            components: [
-                {
-                    type: 2,
-                    style: 3,
-                    label: "Patvirtinti",
-                    custom_id: `accept_${sanitizedId}`,
-                    emoji: { name: "✅" }
-                },
-                {
-                    type: 2,
-                    style: 4,
-                    label: "Atmesti",
-                    custom_id: `reject_${sanitizedId}`,
-                    emoji: { name: "❌" }
-                }
-            ]
-        };
+    const formData = new FormData(this);
+    const jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+
+    try {
+        const response = await fetch("https://api.botghost.com/webhook/1279602479054454814/o8pp3d4kfghsnuiz50ik9", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "ef0576a7eb018e3d7cb3a7d4564069245fa8a9fb2b4dd74b5bd3d20c19983041"
+            },
+            body: JSON.stringify({
+                variables: Object.keys(jsonData).map(key => ({
+                    name: key,
+                    variable: `{${key}}`,
+                    value: jsonData[key]
+                }))
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to send application");
+        }
+
+        alert("Application submitted successfully!");
+        this.reset();
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to submit application.");
     }
+});
 
     // ======================
     // DISCORD INTEGRATION (MODIFIED)
