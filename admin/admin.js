@@ -2,102 +2,39 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log("✅ Admin panel loaded!");
 
     const CONFIG = {
-        JSONBIN: {
-            URL: "https://api.jsonbin.io/v3/b/67c851f6e41b4d34e4a1358b",
-            KEY: "$2a$10$Fhj82wgpsjkF/dgzbqlWN.bvyoK3jeIBkbQm9o/SSzDo9pxNryLi."
+        SUPABASE: {
+            URL: "https://smodsdsnswwtnbnmzhse.supabase.co/rest/v1/IC",
+            API_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb2RzZHNuc3d3dG5ibm16aHNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MjUyOTAsImV4cCI6MjA1NzIwMTI5MH0.zMdjymIaGU66_y6X-fS8nKnrWgJjXgw7NgXPBIzVCiI" // Replace with your actual API key
         }
     };
 
-    const elements = {
-        statusButton: document.getElementById("statusButton"),
-        blacklistButton: document.getElementById("blacklistButton"),
-        removeButton: document.getElementById("removeButton")
-    };
+    // Get elements
+    const fetchDataButton = document.getElementById("fetchSupabaseData");
+    const dataContainer = document.getElementById("data-container");
 
-    let state = {
-        blacklist: []
-    };
-
-    initializeEventListeners();
-
-    function initializeEventListeners() {
-        elements.statusButton.addEventListener("click", toggleApplicationStatus);
-        elements.blacklistButton.addEventListener("click", addToBlacklist);
-        elements.removeButton.addEventListener("click", removeFromBlacklist);
-    }
-
-    async function toggleApplicationStatus() {
-        if (!authenticateAdmin()) return;
-        const response = await fetch(CONFIG.JSONBIN.URL, {
-            headers: { "X-Master-Key": CONFIG.JSONBIN.KEY }
-        });
-        const data = await response.json();
-        const newStatus = data.record.status === "online" ? "offline" : "online";
-        await updateJSONBin(newStatus);
-        alert(`✅ Anketos ${newStatus === "online" ? "atidarytos" : "uždarytos"}`);
-    }
-
-    async function addToBlacklist() {
-        if (!authenticateAdmin()) return;
-        const newId = prompt("Įveskite vartotojo ID:");
-        if (newId) {
-            const response = await fetch(CONFIG.JSONBIN.URL, {
-                headers: { "X-Master-Key": CONFIG.JSONBIN.KEY }
-            });
-            const data = await response.json();
-            state.blacklist = data.record.blacklist || [];
-            if (!state.blacklist.includes(newId)) {
-                state.blacklist.push(newId);
-                await updateJSONBin();
-                alert(`✅ Vartotojas ${newId} užblokuotas`);
-            }
-        }
-    }
-
-    async function removeFromBlacklist() {
-        if (!authenticateAdmin()) return;
-        const idToRemove = prompt("Įveskite vartotojo ID:");
-        if (idToRemove) {
-            const response = await fetch(CONFIG.JSONBIN.URL, {
-                headers: { "X-Master-Key": CONFIG.JSONBIN.KEY }
-            });
-            const data = await response.json();
-            state.blacklist = data.record.blacklist || [];
-            if (state.blacklist.includes(idToRemove)) {
-                state.blacklist = state.blacklist.filter(id => id !== idToRemove);
-                await updateJSONBin();
-                alert(`✅ Vartotojas ${idToRemove} atblokuotas`);
-            }
-        }
-    }
-
-    function authenticateAdmin() {
-        const password = prompt("🔑 Admin slaptažodis:");
-        if (password === "ADMIN_PASSWORD_HERE") return true;
-        alert("❌ Neteisingas slaptažodis!");
-        return false;
-    }
-
-    async function updateJSONBin(newStatus = null) {
+    // Fetch Supabase Data
+    fetchDataButton.addEventListener("click", async function () {
         try {
-            const response = await fetch(CONFIG.JSONBIN.URL, {
-                headers: { "X-Master-Key": CONFIG.JSONBIN.KEY }
-            });
-            const data = await response.json();
-            const updatedData = {
-                status: newStatus !== null ? newStatus : data.record.status,
-                blacklist: state.blacklist
-            };
-            await fetch(CONFIG.JSONBIN.URL, {
-                method: "PUT",
+            const response = await fetch(CONFIG.SUPABASE.URL, {
+                method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
-                    "X-Master-Key": CONFIG.JSONBIN.KEY,
-                },
-                body: JSON.stringify(updatedData)
+                    "apikey": CONFIG.SUPABASE.API_KEY,
+                    "Content-Type": "application/json"
+                }
             });
+
+            if (!response.ok) throw new Error("Failed to fetch data");
+
+            const data = await response.json();
+            dataContainer.innerHTML = "<h3>📜 Supabase Data:</h3>";
+
+            data.forEach(item => {
+                dataContainer.innerHTML += `<p>${JSON.stringify(item)}</p>`;
+            });
+
         } catch (error) {
-            console.error("JSONBin update error:", error);
+            console.error("Error fetching Supabase data:", error);
+            dataContainer.innerHTML = "<p style='color:red;'>⚠️ Error fetching data!</p>";
         }
-    }
+    });
 });
