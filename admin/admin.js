@@ -10,14 +10,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     };
 
     const dataTableBody = document.querySelector("#data-table tbody");
+    let fetchedData = []; // Store fetched data globally
 
-    // Ask for password before loading the page
+    // Ask for password only on page load
     async function authenticateUser() {
         const userPassword = prompt("🔒 Enter Admin Password:");
 
         if (userPassword === CONFIG.ADMIN_PASSWORD) {
             console.log("✅ Password correct, loading data...");
-            await fetchSupabaseData();
+            await fetchSupabaseData(); // Fetch data after password check
         } else {
             alert("❌ Incorrect password! Reloading...");
             location.reload(); // Refresh the page if wrong password
@@ -37,21 +38,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (!response.ok) throw new Error("⚠️ Failed to fetch data");
 
-            const data = await response.json();
-            dataTableBody.innerHTML = ""; // Clear existing data
-
-            // Populate table rows
-            data.forEach(item => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${item.USERIS}</td>
-                    <td>${item.VARDAS}</td>
-                    <td>${item.PAVARDĖ}</td>
-                    <td>${item["STEAM NICKAS"]}</td>
-                    <td><a href="${item["STEAM LINKAS"]}" target="_blank">🔗 Steam Profilis</a></td>
-                `;
-                dataTableBody.appendChild(row);
-            });
+            fetchedData = await response.json(); // Store data globally
+            populateTable(fetchedData); // Display data
 
         } catch (error) {
             console.error("❌ Error fetching Supabase data:", error);
@@ -59,6 +47,36 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Call authentication on page load
+    // Populate Table with Data
+    function populateTable(data) {
+        dataTableBody.innerHTML = ""; // Clear table before adding new rows
+
+        data.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${item.USERIS}</td>
+                <td>${item.VARDAS}</td>
+                <td>${item.PAVARDĖ}</td>
+                <td>${item["STEAM NICKAS"]}</td>
+                <td><a href="${item["STEAM LINKAS"]}" target="_blank">🔗 Steam Profile</a></td>
+            `;
+            dataTableBody.appendChild(row);
+        });
+    }
+
+    // Search & Filter Table (Updates live as you type)
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const searchInput = this.value.toLowerCase();
+
+        const filteredData = fetchedData.filter(item => 
+            Object.values(item).some(value => 
+                value.toString().toLowerCase().includes(searchInput)
+            )
+        );
+
+        populateTable(filteredData); // Re-populate table with filtered results
+    });
+
+    // Authenticate once and fetch data
     authenticateUser();
 });
