@@ -8,13 +8,6 @@
 </head>
 
 <body>
-    <!-- Admin Panel -->
-   
-    <!-- Search Bar -->
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="🔍 Ieškoti pagal bet kokį lauką..." onkeyup="filterTable()">
-    </div>
-
     <!-- Display Data Table -->
     <div class="data-container">
         <table id="data-table">
@@ -30,7 +23,9 @@
             <tbody></tbody>
         </table>
     </div>
-
+ <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 Ieškoti pagal bet kokį lauką..." onkeyup="filterTable()">
+    </div>
     <script src="admin.js"></script>
 </body>
 </html>
