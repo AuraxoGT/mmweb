@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${item.VARDAS}</td>
                 <td>${item.PAVARDĖ}</td>
                 <td>${item["STEAM NICKAS"]}</td>
-                <td><a href="${item["STEAM LINKAS"]}" target="_blank">🔗 Steam Profile</a></td>
+                <td><a href="${item["STEAM LINKAS"]}" target="_blank">🔗 Steam Profilis</a></td>
             `;
             dataTableBody.appendChild(row);
         });
