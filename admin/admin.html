@@ -10,7 +10,10 @@
 <body>
     <!-- Display Data Table -->
     <div class="data-container">
-        <table id="data-table">
+        <table id="data-table"> 
+<div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 Ieškoti pagal bet kokį lauką..." onkeyup="filterTable()">
+    </div>
             <thead>
                 <tr>
                     <th>Vartotojas</th>
@@ -23,9 +26,7 @@
             <tbody></tbody>
         </table>
     </div>
- <div class="search-container">
-        <input type="text" id="searchInput" placeholder="🔍 Ieškoti pagal bet kokį lauką..." onkeyup="filterTable()">
-    </div>
+
     <script src="admin.js"></script>
 </body>
 </html>
